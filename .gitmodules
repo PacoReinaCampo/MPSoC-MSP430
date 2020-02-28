@@ -4,6 +4,6 @@
 [submodule "noc"]
 	path = noc
 	url = https://github.com/PacoReinaCampo/MPSoC-NoC.git
-[submodule "pu"]
-	path = pu
-	url = https://github.com/PacoReinaCampo/PU-MSP430.git
+[submodule "soc"]
+	path = soc
+	url = https://github.com/PacoReinaCampo/SoC-MSP430.git
