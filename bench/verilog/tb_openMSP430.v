@@ -58,35 +58,59 @@ module tb_openMSP430;
   reg               SW1;
 
   // LEDs
-  wire              LED4;
-  wire              LED3;
-  wire              LED2;
-  wire              LED1;
+  wire              LED04;
+  wire              LED03;
+  wire              LED02;
+  wire              LED01;
+
+  wire              LED14;
+  wire              LED13;
+  wire              LED12;
+  wire              LED11;
 
   // UART
-  reg               UART_RXD;
-  wire              UART_TXD;
+  reg               UART_RXD1;
+  wire              UART_TXD1;
+
+  reg               UART_RXD0;
+  wire              UART_TXD0;
 
   // I2C
-  wire 	          PMOD1_P3;
+  wire 	            PMOD1_P3;
   reg               PMOD1_P4;
 
   // Core debug signals
-  wire   [8*32-1:0] omsp0_i_state;
-  wire   [8*32-1:0] omsp0_e_state;
-  wire       [31:0] omsp0_inst_cycle;
-  wire   [8*32-1:0] omsp0_inst_full;
-  wire       [31:0] omsp0_inst_number;
-  wire       [15:0] omsp0_inst_pc;
-  wire   [8*32-1:0] omsp0_inst_short;
+  wire   [8*32-1:0] omsp00_i_state;
+  wire   [8*32-1:0] omsp00_e_state;
+  wire   [    31:0] omsp00_inst_cycle;
+  wire   [8*32-1:0] omsp00_inst_full;
+  wire   [    31:0] omsp00_inst_number;
+  wire   [    15:0] omsp00_inst_pc;
+  wire   [8*32-1:0] omsp00_inst_short;
 
-  wire   [8*32-1:0] omsp1_i_state;
-  wire   [8*32-1:0] omsp1_e_state;
-  wire       [31:0] omsp1_inst_cycle;
-  wire   [8*32-1:0] omsp1_inst_full;
-  wire       [31:0] omsp1_inst_number;
-  wire       [15:0] omsp1_inst_pc;
-  wire   [8*32-1:0] omsp1_inst_short;
+  wire   [8*32-1:0] omsp01_i_state;
+  wire   [8*32-1:0] omsp01_e_state;
+  wire   [    31:0] omsp01_inst_cycle;
+  wire   [8*32-1:0] omsp01_inst_full;
+  wire   [    31:0] omsp01_inst_number;
+  wire   [    15:0] omsp01_inst_pc;
+  wire   [8*32-1:0] omsp01_inst_short;
+
+  wire   [8*32-1:0] omsp10_i_state;
+  wire   [8*32-1:0] omsp10_e_state;
+  wire   [    31:0] omsp10_inst_cycle;
+  wire   [8*32-1:0] omsp10_inst_full;
+  wire   [    31:0] omsp10_inst_number;
+  wire   [    15:0] omsp10_inst_pc;
+  wire   [8*32-1:0] omsp10_inst_short;
+
+  wire   [8*32-1:0] omsp11_i_state;
+  wire   [8*32-1:0] omsp11_e_state;
+  wire   [    31:0] omsp11_inst_cycle;
+  wire   [8*32-1:0] omsp11_inst_full;
+  wire   [    31:0] omsp11_inst_number;
+  wire   [    15:0] omsp11_inst_pc;
+  wire   [8*32-1:0] omsp11_inst_short;
 
   // Testbench variables
   integer           i;
@@ -94,126 +118,245 @@ module tb_openMSP430;
   reg               stimulus_done;
 
 
+  // SoC 0
+
   // CORE 0
   // CPU registers
-  wire       [15:0] omsp0_r0;
-  wire       [15:0] omsp0_r1;
-  wire       [15:0] omsp0_r2;
-  wire       [15:0] omsp0_r3;
-  wire       [15:0] omsp0_r4;
-  wire       [15:0] omsp0_r5;
-  wire       [15:0] omsp0_r6;
-  wire       [15:0] omsp0_r7;
-  wire       [15:0] omsp0_r8;
-  wire       [15:0] omsp0_r9;
-  wire       [15:0] omsp0_r10;
-  wire       [15:0] omsp0_r11;
-  wire       [15:0] omsp0_r12;
-  wire       [15:0] omsp0_r13;
-  wire       [15:0] omsp0_r14;
-  wire       [15:0] omsp0_r15;
+  wire       [15:0] omsp00_r0;
+  wire       [15:0] omsp00_r1;
+  wire       [15:0] omsp00_r2;
+  wire       [15:0] omsp00_r3;
+  wire       [15:0] omsp00_r4;
+  wire       [15:0] omsp00_r5;
+  wire       [15:0] omsp00_r6;
+  wire       [15:0] omsp00_r7;
+  wire       [15:0] omsp00_r8;
+  wire       [15:0] omsp00_r9;
+  wire       [15:0] omsp00_r10;
+  wire       [15:0] omsp00_r11;
+  wire       [15:0] omsp00_r12;
+  wire       [15:0] omsp00_r13;
+  wire       [15:0] omsp00_r14;
+  wire       [15:0] omsp00_r15;
 
   // Debug interface
-  wire              omsp0_dbg_en;
-  wire              omsp0_dbg_clk;
-  wire              omsp0_dbg_rst;
+  wire              omsp00_dbg_en;
+  wire              omsp00_dbg_clk;
+  wire              omsp00_dbg_rst;
 
   // Interrupt detection
-  wire              omsp0_irq_detect;
-  wire              omsp0_nmi_detect;
+  wire              omsp00_irq_detect;
+  wire              omsp00_nmi_detect;
 
-  wire        [2:0] omsp0_i_state_bin;
-  wire        [3:0] omsp0_e_state_bin;
-  wire              omsp0_decode;
-  wire       [15:0] omsp0_ir;
-  wire        [5:0] omsp0_irq_num;
-  wire       [15:0] omsp0_pc;
+  wire        [2:0] omsp00_i_state_bin;
+  wire        [3:0] omsp00_e_state_bin;
+  wire              omsp00_decode;
+  wire       [15:0] omsp00_ir;
+  wire       [ 5:0] omsp00_irq_num;
+  wire       [15:0] omsp00_pc;
 
   // CPU internals
-  wire              omsp0_mclk;
-  wire              omsp0_puc_rst;
+  wire              omsp00_mclk;
+  wire              omsp00_puc_rst;
 
 
   // CORE 1
   // CPU registers
-  wire       [15:0] omsp1_r0;
-  wire       [15:0] omsp1_r1;
-  wire       [15:0] omsp1_r2;
-  wire       [15:0] omsp1_r3;
-  wire       [15:0] omsp1_r4;
-  wire       [15:0] omsp1_r5;
-  wire       [15:0] omsp1_r6;
-  wire       [15:0] omsp1_r7;
-  wire       [15:0] omsp1_r8;
-  wire       [15:0] omsp1_r9;
-  wire       [15:0] omsp1_r10;
-  wire       [15:0] omsp1_r11;
-  wire       [15:0] omsp1_r12;
-  wire       [15:0] omsp1_r13;
-  wire       [15:0] omsp1_r14;
-  wire       [15:0] omsp1_r15;
+  wire       [15:0] omsp01_r0;
+  wire       [15:0] omsp01_r1;
+  wire       [15:0] omsp01_r2;
+  wire       [15:0] omsp01_r3;
+  wire       [15:0] omsp01_r4;
+  wire       [15:0] omsp01_r5;
+  wire       [15:0] omsp01_r6;
+  wire       [15:0] omsp01_r7;
+  wire       [15:0] omsp01_r8;
+  wire       [15:0] omsp01_r9;
+  wire       [15:0] omsp01_r10;
+  wire       [15:0] omsp01_r11;
+  wire       [15:0] omsp01_r12;
+  wire       [15:0] omsp01_r13;
+  wire       [15:0] omsp01_r14;
+  wire       [15:0] omsp01_r15;
 
   // Debug interface
-  wire              omsp1_dbg_en;
-  wire              omsp1_dbg_clk;
-  wire              omsp1_dbg_rst;
+  wire              omsp01_dbg_en;
+  wire              omsp01_dbg_clk;
+  wire              omsp01_dbg_rst;
 
 
   // Interrupt detection
-  wire              omsp1_irq_detect;
-  wire              omsp1_nmi_detect;
+  wire              omsp01_irq_detect;
+  wire              omsp01_nmi_detect;
 
-  wire        [2:0] omsp1_i_state_bin;
-  wire        [3:0] omsp1_e_state_bin;
-  wire              omsp1_decode;
-  wire       [15:0] omsp1_ir;
-  wire        [5:0] omsp1_irq_num;
-  wire       [15:0] omsp1_pc;
+  wire        [2:0] omsp01_i_state_bin;
+  wire        [3:0] omsp01_e_state_bin;
+  wire              omsp01_decode;
+  wire       [15:0] omsp01_ir;
+  wire       [ 5:0] omsp01_irq_num;
+  wire       [15:0] omsp01_pc;
 
   // CPU internals
-  wire              omsp1_mclk;
-  wire              omsp1_puc_rst;
+  wire              omsp01_mclk;
+  wire              omsp01_puc_rst;
 
 
   // Data memory
-  wire [`DMEM_MSB:0] omsp0_dmem_addr;
-  wire               omsp0_dmem_cen_sp;
-  wire               omsp0_dmem_cen_dp;
-  wire        [15:0] omsp0_dmem_din;
-  wire         [1:0] omsp0_dmem_wen;
-  wire        [15:0] omsp0_dmem_dout_sp;
-  wire        [15:0] omsp0_dmem_dout_dp;
+  wire [`DMEM_MSB:0] omsp00_dmem_addr;
+  wire               omsp00_dmem_cen_sp;
+  wire               omsp00_dmem_cen_dp;
+  wire        [15:0] omsp00_dmem_din;
+  wire        [ 1:0] omsp00_dmem_wen;
+  wire        [15:0] omsp00_dmem_dout_sp;
+  wire        [15:0] omsp00_dmem_dout_dp;
 
-  wire [`DMEM_MSB:0] omsp1_dmem_addr;
-  wire               omsp1_dmem_cen_sp;
-  wire               omsp1_dmem_cen_dp;
-  wire        [15:0] omsp1_dmem_din;
-  wire         [1:0] omsp1_dmem_wen;
-  wire        [15:0] omsp1_dmem_dout_sp;
-  wire        [15:0] omsp1_dmem_dout_dp;
+  wire [`DMEM_MSB:0] omsp01_dmem_addr;
+  wire               omsp01_dmem_cen_sp;
+  wire               omsp01_dmem_cen_dp;
+  wire        [15:0] omsp01_dmem_din;
+  wire        [ 1:0] omsp01_dmem_wen;
+  wire        [15:0] omsp01_dmem_dout_sp;
+  wire        [15:0] omsp01_dmem_dout_dp;
 
   // Program memory
-  wire [`PMEM_MSB:0] omsp0_pmem_addr;
-  wire               omsp0_pmem_cen;
-  wire        [15:0] omsp0_pmem_din;
-  wire         [1:0] omsp0_pmem_wen;
-  wire        [15:0] omsp0_pmem_dout;
+  wire [`PMEM_MSB:0] omsp00_pmem_addr;
+  wire               omsp00_pmem_cen;
+  wire        [15:0] omsp00_pmem_din;
+  wire        [ 1:0] omsp00_pmem_wen;
+  wire        [15:0] omsp00_pmem_dout;
 
-  wire [`PMEM_MSB:0] omsp1_pmem_addr;
-  wire               omsp1_pmem_cen;
-  wire        [15:0] omsp1_pmem_din;
-  wire         [1:0] omsp1_pmem_wen;
-  wire        [15:0] omsp1_pmem_dout;
+  wire [`PMEM_MSB:0] omsp01_pmem_addr;
+  wire               omsp01_pmem_cen;
+  wire        [15:0] omsp01_pmem_din;
+  wire        [ 1:0] omsp01_pmem_wen;
+  wire        [15:0] omsp01_pmem_dout;
 
-  wire               dco_clk;
+  wire               dco_clk0;
+
+
+  // SoC 1
+
+  // CORE 0
+  // CPU registers
+  wire       [15:0] omsp10_r0;
+  wire       [15:0] omsp10_r1;
+  wire       [15:0] omsp10_r2;
+  wire       [15:0] omsp10_r3;
+  wire       [15:0] omsp10_r4;
+  wire       [15:0] omsp10_r5;
+  wire       [15:0] omsp10_r6;
+  wire       [15:0] omsp10_r7;
+  wire       [15:0] omsp10_r8;
+  wire       [15:0] omsp10_r9;
+  wire       [15:0] omsp10_r10;
+  wire       [15:0] omsp10_r11;
+  wire       [15:0] omsp10_r12;
+  wire       [15:0] omsp10_r13;
+  wire       [15:0] omsp10_r14;
+  wire       [15:0] omsp10_r15;
+
+  // Debug interface
+  wire              omsp10_dbg_en;
+  wire              omsp10_dbg_clk;
+  wire              omsp10_dbg_rst;
+
+  // Interrupt detection
+  wire              omsp10_irq_detect;
+  wire              omsp10_nmi_detect;
+
+  wire        [2:0] omsp10_i_state_bin;
+  wire        [3:0] omsp10_e_state_bin;
+  wire              omsp10_decode;
+  wire       [15:0] omsp10_ir;
+  wire       [ 5:0] omsp10_irq_num;
+  wire       [15:0] omsp10_pc;
+
+  // CPU internals
+  wire              omsp10_mclk;
+  wire              omsp10_puc_rst;
+
+
+  // CORE 1
+  // CPU registers
+  wire       [15:0] omsp11_r0;
+  wire       [15:0] omsp11_r1;
+  wire       [15:0] omsp11_r2;
+  wire       [15:0] omsp11_r3;
+  wire       [15:0] omsp11_r4;
+  wire       [15:0] omsp11_r5;
+  wire       [15:0] omsp11_r6;
+  wire       [15:0] omsp11_r7;
+  wire       [15:0] omsp11_r8;
+  wire       [15:0] omsp11_r9;
+  wire       [15:0] omsp11_r10;
+  wire       [15:0] omsp11_r11;
+  wire       [15:0] omsp11_r12;
+  wire       [15:0] omsp11_r13;
+  wire       [15:0] omsp11_r14;
+  wire       [15:0] omsp11_r15;
+
+  // Debug interface
+  wire              omsp11_dbg_en;
+  wire              omsp11_dbg_clk;
+  wire              omsp11_dbg_rst;
+
+
+  // Interrupt detection
+  wire              omsp11_irq_detect;
+  wire              omsp11_nmi_detect;
+
+  wire        [2:0] omsp11_i_state_bin;
+  wire        [3:0] omsp11_e_state_bin;
+  wire              omsp11_decode;
+  wire       [15:0] omsp11_ir;
+  wire       [ 5:0] omsp11_irq_num;
+  wire       [15:0] omsp11_pc;
+
+  // CPU internals
+  wire              omsp11_mclk;
+  wire              omsp11_puc_rst;
+
+
+  // Data memory
+  wire [`DMEM_MSB:0] omsp10_dmem_addr;
+  wire               omsp10_dmem_cen_sp;
+  wire               omsp10_dmem_cen_dp;
+  wire        [15:0] omsp10_dmem_din;
+  wire        [ 1:0] omsp10_dmem_wen;
+  wire        [15:0] omsp10_dmem_dout_sp;
+  wire        [15:0] omsp10_dmem_dout_dp;
+
+  wire [`DMEM_MSB:0] omsp11_dmem_addr;
+  wire               omsp11_dmem_cen_sp;
+  wire               omsp11_dmem_cen_dp;
+  wire        [15:0] omsp11_dmem_din;
+  wire        [ 1:0] omsp11_dmem_wen;
+  wire        [15:0] omsp11_dmem_dout_sp;
+  wire        [15:0] omsp11_dmem_dout_dp;
+
+  // Program memory
+  wire [`PMEM_MSB:0] omsp10_pmem_addr;
+  wire               omsp10_pmem_cen;
+  wire        [15:0] omsp10_pmem_din;
+  wire        [ 1:0] omsp10_pmem_wen;
+  wire        [15:0] omsp10_pmem_dout;
+
+  wire [`PMEM_MSB:0] omsp11_pmem_addr;
+  wire               omsp11_pmem_cen;
+  wire        [15:0] omsp11_pmem_din;
+  wire        [ 1:0] omsp11_pmem_wen;
+  wire        [15:0] omsp11_pmem_dout;
+
+  wire               dco_clk1;
+
 
   //
   // Include files
   //------------------------------
 
   // CPU & Memory registers
-  `include "registers_omsp0.v"
-  `include "registers_omsp1.v"
+  reg [15:0] pmem0 [0:8191];
+  reg [15:0] pmem1 [0:8191];
 
   // Verilog stimulus
   `include "stimulus.v"
@@ -224,13 +367,14 @@ module tb_openMSP430;
 
   initial begin
     // Read memory file
-    #10 $readmemh("./pmem.mem", pmem);
+    #10 $readmemh("./pmem.mem", pmem0);
+    #10 $readmemh("./pmem.mem", pmem1);
 
     // Update Xilinx memory banks
-    for (i=0; i<8192; i=i+1)
-      begin
-        RAM_P2_shared.RAM_DP_inst.mem[i] = pmem[i];
-      end
+    for (i=0; i<8192; i=i+1) begin
+      RAM_P2_shared0.RAM_DP_inst.mem[i] = pmem0[i];
+      RAM_P2_shared1.RAM_DP_inst.mem[i] = pmem1[i];
+    end
   end
 
   //
@@ -257,7 +401,8 @@ module tb_openMSP430;
     SW3           = 1'b0;
     SW2           = 1'b0;
     SW1           = 1'b0;
-    UART_RXD      = 1'b1;  // UART
+    UART_RXD1     = 1'b1;  // UART
+    UART_RXD0     = 1'b1;  // UART
     PMOD1_P4      = 1'b1;
   end
 
@@ -265,117 +410,259 @@ module tb_openMSP430;
   // openMSP430 FPGA Instance
   //----------------------------------
 
-  DUALCORE_430 dut (
+  MSP430_MPSoC DUT (
+
+    //SoC 0
 
     // CORE 0
     // CPU registers
-    .omsp0_r0         (omsp0_r0),
-    .omsp0_r1         (omsp0_r1),
-    .omsp0_r2         (omsp0_r2),
-    .omsp0_r3         (omsp0_r3),
-    .omsp0_r4         (omsp0_r4),
-    .omsp0_r5         (omsp0_r5),
-    .omsp0_r6         (omsp0_r6),
-    .omsp0_r7         (omsp0_r7),
-    .omsp0_r8         (omsp0_r8),
-    .omsp0_r9         (omsp0_r9),
-    .omsp0_r10        (omsp0_r10),
-    .omsp0_r11        (omsp0_r11),
-    .omsp0_r12        (omsp0_r12),
-    .omsp0_r13        (omsp0_r13),
-    .omsp0_r14        (omsp0_r14),
-    .omsp0_r15        (omsp0_r15),
+    .omsp00_r0         (omsp00_r0),
+    .omsp00_r1         (omsp00_r1),
+    .omsp00_r2         (omsp00_r2),
+    .omsp00_r3         (omsp00_r3),
+    .omsp00_r4         (omsp00_r4),
+    .omsp00_r5         (omsp00_r5),
+    .omsp00_r6         (omsp00_r6),
+    .omsp00_r7         (omsp00_r7),
+    .omsp00_r8         (omsp00_r8),
+    .omsp00_r9         (omsp00_r9),
+    .omsp00_r10        (omsp00_r10),
+    .omsp00_r11        (omsp00_r11),
+    .omsp00_r12        (omsp00_r12),
+    .omsp00_r13        (omsp00_r13),
+    .omsp00_r14        (omsp00_r14),
+    .omsp00_r15        (omsp00_r15),
 
     // Debug interface
-    .omsp0_dbg_en     (omsp0_dbg_en),
-    .omsp0_dbg_clk    (omsp0_dbg_clk),
-    .omsp0_dbg_rst    (omsp0_dbg_rst),
+    .omsp00_dbg_en     (omsp00_dbg_en),
+    .omsp00_dbg_clk    (omsp00_dbg_clk),
+    .omsp00_dbg_rst    (omsp00_dbg_rst),
 
     // Interrupt detection
-    .omsp0_irq_detect (omsp0_irq_detect),
-    .omsp0_nmi_pnd    (omsp0_nmi_detect),
+    .omsp00_irq_detect (omsp00_irq_detect),
+    .omsp00_nmi_pnd    (omsp00_nmi_detect),
 
-    .omsp0_i_state    (omsp0_i_state_bin),
-    .omsp0_e_state    (omsp0_e_state_bin),
-    .omsp0_decode     (omsp0_decode),
-    .omsp0_ir         (omsp0_ir),
-    .omsp0_irq_num    (omsp0_irq_num),
-    .omsp0_pc         (omsp0_pc),
+    .omsp00_i_state    (omsp00_i_state_bin),
+    .omsp00_e_state    (omsp00_e_state_bin),
+    .omsp00_decode     (omsp00_decode),
+    .omsp00_ir         (omsp00_ir),
+    .omsp00_irq_num    (omsp00_irq_num),
+    .omsp00_pc         (omsp00_pc),
 
     // CPU internals
-    .omsp0_mclk       (omsp0_mclk),
-    .omsp0_puc_rst    (omsp0_puc_rst),
+    .omsp00_mclk       (omsp00_mclk),
+    .omsp00_puc_rst    (omsp00_puc_rst),
 
     // CORE 1
     // CPU registers
-    .omsp1_r0         (omsp1_r0),
-    .omsp1_r1         (omsp1_r1),
-    .omsp1_r2         (omsp1_r2),
-    .omsp1_r3         (omsp1_r3),
-    .omsp1_r4         (omsp1_r4),
-    .omsp1_r5         (omsp1_r5),
-    .omsp1_r6         (omsp1_r6),
-    .omsp1_r7         (omsp1_r7),
-    .omsp1_r8         (omsp1_r8),
-    .omsp1_r9         (omsp1_r9),
-    .omsp1_r10        (omsp1_r10),
-    .omsp1_r11        (omsp1_r11),
-    .omsp1_r12        (omsp1_r12),
-    .omsp1_r13        (omsp1_r13),
-    .omsp1_r14        (omsp1_r14),
-    .omsp1_r15        (omsp1_r15),
+    .omsp01_r0         (omsp01_r0),
+    .omsp01_r1         (omsp01_r1),
+    .omsp01_r2         (omsp01_r2),
+    .omsp01_r3         (omsp01_r3),
+    .omsp01_r4         (omsp01_r4),
+    .omsp01_r5         (omsp01_r5),
+    .omsp01_r6         (omsp01_r6),
+    .omsp01_r7         (omsp01_r7),
+    .omsp01_r8         (omsp01_r8),
+    .omsp01_r9         (omsp01_r9),
+    .omsp01_r10        (omsp01_r10),
+    .omsp01_r11        (omsp01_r11),
+    .omsp01_r12        (omsp01_r12),
+    .omsp01_r13        (omsp01_r13),
+    .omsp01_r14        (omsp01_r14),
+    .omsp01_r15        (omsp01_r15),
 
     // Debug interface
-    .omsp1_dbg_en     (omsp1_dbg_en),
-    .omsp1_dbg_clk    (omsp1_dbg_clk),
-    .omsp1_dbg_rst    (omsp1_dbg_rst),
+    .omsp01_dbg_en     (omsp01_dbg_en),
+    .omsp01_dbg_clk    (omsp01_dbg_clk),
+    .omsp01_dbg_rst    (omsp01_dbg_rst),
 
     // Interrupt detection
-    .omsp1_irq_detect (omsp1_irq_detect),
-    .omsp1_nmi_pnd    (omsp1_nmi_detect),
+    .omsp01_irq_detect (omsp01_irq_detect),
+    .omsp01_nmi_pnd    (omsp01_nmi_detect),
 
-    .omsp1_i_state    (omsp1_i_state_bin),
-    .omsp1_e_state    (omsp1_e_state_bin),
-    .omsp1_decode     (omsp1_decode),
-    .omsp1_ir         (omsp1_ir),
-    .omsp1_irq_num    (omsp1_irq_num),
-    .omsp1_pc         (omsp1_pc),
+    .omsp01_i_state    (omsp01_i_state_bin),
+    .omsp01_e_state    (omsp01_e_state_bin),
+    .omsp01_decode     (omsp01_decode),
+    .omsp01_ir         (omsp01_ir),
+    .omsp01_irq_num    (omsp01_irq_num),
+    .omsp01_pc         (omsp01_pc),
 
     // CPU internals
-    .omsp1_mclk       (omsp1_mclk),
-    .omsp1_puc_rst    (omsp1_puc_rst),
+    .omsp01_mclk       (omsp01_mclk),
+    .omsp01_puc_rst    (omsp01_puc_rst),
 
     // Data memory
-    .omsp0_dmem_addr    (omsp0_dmem_addr),
-    .omsp0_dmem_cen_sp  (omsp0_dmem_cen_sp),
-    .omsp0_dmem_cen_dp  (omsp0_dmem_cen_dp),
-    .omsp0_dmem_din     (omsp0_dmem_din),
-    .omsp0_dmem_wen     (omsp0_dmem_wen),
-    .omsp0_dmem_dout_sp (omsp0_dmem_dout_sp),
-    .omsp0_dmem_dout_dp (omsp0_dmem_dout_dp),
+    .omsp00_dmem_addr    (omsp00_dmem_addr),
+    .omsp00_dmem_cen_sp  (omsp00_dmem_cen_sp),
+    .omsp00_dmem_cen_dp  (omsp00_dmem_cen_dp),
+    .omsp00_dmem_din     (omsp00_dmem_din),
+    .omsp00_dmem_wen     (omsp00_dmem_wen),
+    .omsp00_dmem_dout_sp (omsp00_dmem_dout_sp),
+    .omsp00_dmem_dout_dp (omsp00_dmem_dout_dp),
 
-    .omsp1_dmem_addr    (omsp1_dmem_addr),
-    .omsp1_dmem_cen_sp  (omsp1_dmem_cen_sp),
-    .omsp1_dmem_cen_dp  (omsp1_dmem_cen_dp),
-    .omsp1_dmem_din     (omsp1_dmem_din),
-    .omsp1_dmem_wen     (omsp1_dmem_wen),
-    .omsp1_dmem_dout_sp (omsp1_dmem_dout_sp),
-    .omsp1_dmem_dout_dp (omsp1_dmem_dout_dp),
+    .omsp01_dmem_addr    (omsp01_dmem_addr),
+    .omsp01_dmem_cen_sp  (omsp01_dmem_cen_sp),
+    .omsp01_dmem_cen_dp  (omsp01_dmem_cen_dp),
+    .omsp01_dmem_din     (omsp01_dmem_din),
+    .omsp01_dmem_wen     (omsp01_dmem_wen),
+    .omsp01_dmem_dout_sp (omsp01_dmem_dout_sp),
+    .omsp01_dmem_dout_dp (omsp01_dmem_dout_dp),
 
     // Program memory
-    .omsp0_pmem_addr  (omsp0_pmem_addr),
-    .omsp0_pmem_cen   (omsp0_pmem_cen),
-    .omsp0_pmem_din   (omsp0_pmem_din),
-    .omsp0_pmem_wen   (omsp0_pmem_wen),
-    .omsp0_pmem_dout  (omsp0_pmem_dout),
+    .omsp00_pmem_addr  (omsp00_pmem_addr),
+    .omsp00_pmem_cen   (omsp00_pmem_cen),
+    .omsp00_pmem_din   (omsp00_pmem_din),
+    .omsp00_pmem_wen   (omsp00_pmem_wen),
+    .omsp00_pmem_dout  (omsp00_pmem_dout),
 
-    .omsp1_pmem_addr  (omsp1_pmem_addr),
-    .omsp1_pmem_cen   (omsp1_pmem_cen),
-    .omsp1_pmem_din   (omsp1_pmem_din),
-    .omsp1_pmem_wen   (omsp1_pmem_wen),
-    .omsp1_pmem_dout  (omsp1_pmem_dout),
+    .omsp01_pmem_addr  (omsp01_pmem_addr),
+    .omsp01_pmem_cen   (omsp01_pmem_cen),
+    .omsp01_pmem_din   (omsp01_pmem_din),
+    .omsp01_pmem_wen   (omsp01_pmem_wen),
+    .omsp01_pmem_dout  (omsp01_pmem_dout),
 
-    .dco_clk          (dco_clk),
+    .dco_clk0          (dco_clk0),
+
+    //----------------------------------------------
+    // User LEDs			
+    //----------------------------------------------
+    .GPIO_LED01       (LED01),
+    .GPIO_LED02       (LED02),
+    .GPIO_LED03       (LED03),
+    .GPIO_LED04       (LED04),
+
+    //----------------------------------------------
+    // Silicon Labs CP2102 USB-to-UART Bridge Chip
+    //----------------------------------------------
+    .USB_RS232_RXD0   (UART_RXD0),
+    .USB_RS232_TXD0   (UART_TXD0),
+
+    //SoC 1
+
+    // CORE 0
+    // CPU registers
+    .omsp10_r0         (omsp10_r0),
+    .omsp10_r1         (omsp10_r1),
+    .omsp10_r2         (omsp10_r2),
+    .omsp10_r3         (omsp10_r3),
+    .omsp10_r4         (omsp10_r4),
+    .omsp10_r5         (omsp10_r5),
+    .omsp10_r6         (omsp10_r6),
+    .omsp10_r7         (omsp10_r7),
+    .omsp10_r8         (omsp10_r8),
+    .omsp10_r9         (omsp10_r9),
+    .omsp10_r10        (omsp10_r10),
+    .omsp10_r11        (omsp10_r11),
+    .omsp10_r12        (omsp10_r12),
+    .omsp10_r13        (omsp10_r13),
+    .omsp10_r14        (omsp10_r14),
+    .omsp10_r15        (omsp10_r15),
+
+    // Debug interface
+    .omsp10_dbg_en     (omsp10_dbg_en),
+    .omsp10_dbg_clk    (omsp10_dbg_clk),
+    .omsp10_dbg_rst    (omsp10_dbg_rst),
+
+    // Interrupt detection
+    .omsp10_irq_detect (omsp10_irq_detect),
+    .omsp10_nmi_pnd    (omsp10_nmi_detect),
+
+    .omsp10_i_state    (omsp10_i_state_bin),
+    .omsp10_e_state    (omsp10_e_state_bin),
+    .omsp10_decode     (omsp10_decode),
+    .omsp10_ir         (omsp10_ir),
+    .omsp10_irq_num    (omsp10_irq_num),
+    .omsp10_pc         (omsp10_pc),
+
+    // CPU internals
+    .omsp10_mclk       (omsp10_mclk),
+    .omsp10_puc_rst    (omsp10_puc_rst),
+
+    // CORE 1
+    // CPU registers
+    .omsp11_r0         (omsp11_r0),
+    .omsp11_r1         (omsp11_r1),
+    .omsp11_r2         (omsp11_r2),
+    .omsp11_r3         (omsp11_r3),
+    .omsp11_r4         (omsp11_r4),
+    .omsp11_r5         (omsp11_r5),
+    .omsp11_r6         (omsp11_r6),
+    .omsp11_r7         (omsp11_r7),
+    .omsp11_r8         (omsp11_r8),
+    .omsp11_r9         (omsp11_r9),
+    .omsp11_r10        (omsp11_r10),
+    .omsp11_r11        (omsp11_r11),
+    .omsp11_r12        (omsp11_r12),
+    .omsp11_r13        (omsp11_r13),
+    .omsp11_r14        (omsp11_r14),
+    .omsp11_r15        (omsp11_r15),
+
+    // Debug interface
+    .omsp11_dbg_en     (omsp11_dbg_en),
+    .omsp11_dbg_clk    (omsp11_dbg_clk),
+    .omsp11_dbg_rst    (omsp11_dbg_rst),
+
+    // Interrupt detection
+    .omsp11_irq_detect (omsp11_irq_detect),
+    .omsp11_nmi_pnd    (omsp11_nmi_detect),
+
+    .omsp11_i_state    (omsp11_i_state_bin),
+    .omsp11_e_state    (omsp11_e_state_bin),
+    .omsp11_decode     (omsp11_decode),
+    .omsp11_ir         (omsp11_ir),
+    .omsp11_irq_num    (omsp11_irq_num),
+    .omsp11_pc         (omsp11_pc),
+
+    // CPU internals
+    .omsp11_mclk       (omsp11_mclk),
+    .omsp11_puc_rst    (omsp11_puc_rst),
+
+    // Data memory
+    .omsp10_dmem_addr    (omsp10_dmem_addr),
+    .omsp10_dmem_cen_sp  (omsp10_dmem_cen_sp),
+    .omsp10_dmem_cen_dp  (omsp10_dmem_cen_dp),
+    .omsp10_dmem_din     (omsp10_dmem_din),
+    .omsp10_dmem_wen     (omsp10_dmem_wen),
+    .omsp10_dmem_dout_sp (omsp10_dmem_dout_sp),
+    .omsp10_dmem_dout_dp (omsp10_dmem_dout_dp),
+
+    .omsp11_dmem_addr    (omsp11_dmem_addr),
+    .omsp11_dmem_cen_sp  (omsp11_dmem_cen_sp),
+    .omsp11_dmem_cen_dp  (omsp11_dmem_cen_dp),
+    .omsp11_dmem_din     (omsp11_dmem_din),
+    .omsp11_dmem_wen     (omsp11_dmem_wen),
+    .omsp11_dmem_dout_sp (omsp11_dmem_dout_sp),
+    .omsp11_dmem_dout_dp (omsp11_dmem_dout_dp),
+
+    // Program memory
+    .omsp10_pmem_addr  (omsp10_pmem_addr),
+    .omsp10_pmem_cen   (omsp10_pmem_cen),
+    .omsp10_pmem_din   (omsp10_pmem_din),
+    .omsp10_pmem_wen   (omsp10_pmem_wen),
+    .omsp10_pmem_dout  (omsp10_pmem_dout),
+
+    .omsp11_pmem_addr  (omsp11_pmem_addr),
+    .omsp11_pmem_cen   (omsp11_pmem_cen),
+    .omsp11_pmem_din   (omsp11_pmem_din),
+    .omsp11_pmem_wen   (omsp11_pmem_wen),
+    .omsp11_pmem_dout  (omsp11_pmem_dout),
+
+    .dco_clk1          (dco_clk1),
+
+    //----------------------------------------------
+    // User LEDs			
+    //----------------------------------------------
+    .GPIO_LED11       (LED11),
+    .GPIO_LED12       (LED12),
+    .GPIO_LED13       (LED13),
+    .GPIO_LED14       (LED14),
+    //----------------------------------------------
+    // Silicon Labs CP2102 USB-to-UART Bridge Chip
+    //----------------------------------------------
+    .USB_RS232_RXD1   (UART_RXD1),
+    .USB_RS232_TXD1   (UART_TXD1),
+
 
     //----------------------------------------------
     // User Reset Push Button
@@ -400,20 +687,6 @@ module tb_openMSP430;
     .GPIO_DIP4       (SW4),
 
     //----------------------------------------------
-    // User LEDs			
-    //----------------------------------------------
-    .GPIO_LED1       (LED1),
-    .GPIO_LED2       (LED2),
-    .GPIO_LED3       (LED3),
-    .GPIO_LED4       (LED4),
-
-    //----------------------------------------------
-    // Silicon Labs CP2102 USB-to-UART Bridge Chip
-    //----------------------------------------------
-    .USB_RS232_RXD   (UART_RXD),
-    .USB_RS232_TXD   (UART_TXD),
-
-    //----------------------------------------------
     // Peripheral Modules (PMODs) and GPIO
     //     https://www.digilentinc.com/PMODs
     //----------------------------------------------
@@ -425,57 +698,109 @@ module tb_openMSP430;
 
 
   // DATA MEMORIES
-  // Data Memory (CPU 0)
-  RAM_D1 RAM_D1_omsp0 (
-    .clka           ( dco_clk),
-    .ena            (~omsp0_dmem_cen_sp),
-    .wea            (~omsp0_dmem_wen),
-    .addra          ( omsp0_dmem_addr[`DMEM_MSB-1:0]),
-    .dina           ( omsp0_dmem_din),
-    .douta          ( omsp0_dmem_dout_sp)
+  // Data Memory (CPU 00)
+  RAM_D1 RAM_D1_omsp00 (
+    .clka           ( dco_clk0),
+    .ena            (~omsp00_dmem_cen_sp),
+    .wea            (~omsp00_dmem_wen),
+    .addra          ( omsp00_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp00_dmem_din),
+    .douta          ( omsp00_dmem_dout_sp)
   );
 
-  // Data Memory (CPU 1)
-  RAM_D1 RAM_D1_omsp1 (
-    .clka           ( dco_clk),
-    .ena            (~omsp1_dmem_cen_sp),
-    .wea            (~omsp1_dmem_wen),
-    .addra          ( omsp1_dmem_addr[`DMEM_MSB-1:0]),
-    .dina           ( omsp1_dmem_din),
-    .douta          ( omsp1_dmem_dout_sp)
+  // Data Memory (CPU 01)
+  RAM_D1 RAM_D1_omsp01 (
+    .clka           ( dco_clk0),
+    .ena            (~omsp01_dmem_cen_sp),
+    .wea            (~omsp01_dmem_wen),
+    .addra          ( omsp01_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp01_dmem_din),
+    .douta          ( omsp01_dmem_dout_sp)
   );
 
-  // Shared Data Memory (CPU 0 - CPU 1)
-  RAM_D2 RAM_D2_shared (
-    .clka           ( dco_clk),
-    .ena            (~omsp0_dmem_cen_dp),
-    .wea            (~omsp0_dmem_wen),
-    .addra          ( omsp0_dmem_addr[`DMEM_MSB-1:0]),
-    .dina           ( omsp0_dmem_din),
-    .douta          ( omsp0_dmem_dout_dp),
-    .clkb           ( dco_clk),
-    .enb            (~omsp1_dmem_cen_dp),
-    .web            (~omsp1_dmem_wen),
-    .addrb          ( omsp1_dmem_addr[`DMEM_MSB-1:0]),
-    .dinb           ( omsp1_dmem_din),
-    .doutb          ( omsp1_dmem_dout_dp)
+  // Data Memory (CPU 10)
+  RAM_D1 RAM_D1_omsp10 (
+    .clka           ( dco_clk1),
+    .ena            (~omsp10_dmem_cen_sp),
+    .wea            (~omsp10_dmem_wen),
+    .addra          ( omsp10_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp10_dmem_din),
+    .douta          ( omsp10_dmem_dout_sp)
+  );
+
+  // Data Memory (CPU 11)
+  RAM_D1 RAM_D1_omsp11 (
+    .clka           ( dco_clk1),
+    .ena            (~omsp11_dmem_cen_sp),
+    .wea            (~omsp11_dmem_wen),
+    .addra          ( omsp11_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp11_dmem_din),
+    .douta          ( omsp11_dmem_dout_sp)
+  );
+
+  // Shared Data Memory (CPU 00 - CPU 01)
+  RAM_D2 RAM_D2_shared0 (
+    .clka           ( dco_clk0),
+    .ena            (~omsp00_dmem_cen_dp),
+    .wea            (~omsp00_dmem_wen),
+    .addra          ( omsp00_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp00_dmem_din),
+    .douta          ( omsp00_dmem_dout_dp),
+    .clkb           ( dco_clk1),
+    .enb            (~omsp11_dmem_cen_dp),
+    .web            (~omsp11_dmem_wen),
+    .addrb          ( omsp11_dmem_addr[`DMEM_MSB-1:0]),
+    .dinb           ( omsp11_dmem_din),
+    .doutb          ( omsp11_dmem_dout_dp)
+  );
+
+  // Shared Data Memory (CPU 10 - CPU 11)
+  RAM_D2 RAM_D2_shared1 (
+    .clka           ( dco_clk1),
+    .ena            (~omsp10_dmem_cen_dp),
+    .wea            (~omsp10_dmem_wen),
+    .addra          ( omsp10_dmem_addr[`DMEM_MSB-1:0]),
+    .dina           ( omsp10_dmem_din),
+    .douta          ( omsp10_dmem_dout_dp),
+    .clkb           ( dco_clk1),
+    .enb            (~omsp11_dmem_cen_dp),
+    .web            (~omsp11_dmem_wen),
+    .addrb          ( omsp11_dmem_addr[`DMEM_MSB-1:0]),
+    .dinb           ( omsp11_dmem_din),
+    .doutb          ( omsp11_dmem_dout_dp)
   );
 
   // PROGRAM MEMORIES
-  // Shared Program Memory (CPU 0 - CPU 1)
-  RAM_P2 RAM_P2_shared (
-    .clka           ( dco_clk),
-    .ena            (~omsp0_pmem_cen),
-    .wea            (~omsp0_pmem_wen),
-    .addra          ( omsp0_pmem_addr),
-    .dina           ( omsp0_pmem_din),
-    .douta          ( omsp0_pmem_dout),
-    .clkb           ( dco_clk),
-    .enb            (~omsp1_pmem_cen),
-    .web            (~omsp1_pmem_wen),
-    .addrb          ( omsp1_pmem_addr),
-    .dinb           ( omsp1_pmem_din),
-    .doutb          ( omsp1_pmem_dout)
+  // Shared Program Memory (CPU 00 - CPU 01)
+  RAM_P2 RAM_P2_shared0 (
+    .clka           ( dco_clk0),
+    .ena            (~omsp00_pmem_cen),
+    .wea            (~omsp00_pmem_wen),
+    .addra          ( omsp00_pmem_addr),
+    .dina           ( omsp00_pmem_din),
+    .douta          ( omsp00_pmem_dout),
+    .clkb           ( dco_clk0),
+    .enb            (~omsp01_pmem_cen),
+    .web            (~omsp01_pmem_wen),
+    .addrb          ( omsp01_pmem_addr),
+    .dinb           ( omsp01_pmem_din),
+    .doutb          ( omsp01_pmem_dout)
+  );
+
+  // Shared Program Memory (CPU 10 - CPU 11)
+  RAM_P2 RAM_P2_shared1 (
+    .clka           ( dco_clk1),
+    .ena            (~omsp10_pmem_cen),
+    .wea            (~omsp10_pmem_wen),
+    .addra          ( omsp10_pmem_addr),
+    .dina           ( omsp10_pmem_din),
+    .douta          ( omsp10_pmem_dout),
+    .clkb           ( dco_clk1),
+    .enb            (~omsp11_pmem_cen),
+    .web            (~omsp11_pmem_wen),
+    .addrb          ( omsp11_pmem_addr),
+    .dinb           ( omsp11_pmem_din),
+    .doutb          ( omsp11_pmem_dout)
   );
 
 
@@ -484,13 +809,21 @@ module tb_openMSP430;
   msp_debug msp_debug_omsp0 (
 
     // OUTPUTs
-    .e_state      (omsp0_e_state),       // Execution state
-    .i_state      (omsp0_i_state),       // Instruction fetch state
-    .inst_cycle   (omsp0_inst_cycle),    // Cycle number within current instruction
-    .inst_full    (omsp0_inst_full),     // Currently executed instruction (full version)
-    .inst_number  (omsp0_inst_number),   // Instruction number since last system reset
-    .inst_pc      (omsp0_inst_pc),       // Instruction Program counter
-    .inst_short   (omsp0_inst_short),    // Currently executed instruction (short version)
+    .e_state0      (omsp00_e_state),       // Execution state
+    .i_state0      (omsp00_i_state),       // Instruction fetch state
+    .inst_cycle0   (omsp00_inst_cycle),    // Cycle number within current instruction
+    .inst_full0    (omsp00_inst_full),     // Currently executed instruction (full version)
+    .inst_number0  (omsp00_inst_number),   // Instruction number since last system reset
+    .inst_pc0      (omsp00_inst_pc),       // Instruction Program counter
+    .inst_short0   (omsp00_inst_short),    // Currently executed instruction (short version)
+
+    .e_state1      (omsp10_e_state),       // Execution state
+    .i_state1      (omsp10_i_state),       // Instruction fetch state
+    .inst_cycle1   (omsp10_inst_cycle),    // Cycle number within current instruction
+    .inst_full1    (omsp10_inst_full),     // Currently executed instruction (full version)
+    .inst_number1  (omsp10_inst_number),   // Instruction number since last system reset
+    .inst_pc1      (omsp10_inst_pc),       // Instruction Program counter
+    .inst_short1   (omsp10_inst_short),    // Currently executed instruction (short version)
 
     // INPUTs
     .core_select  (1'b0)                 // Core selection
@@ -499,13 +832,21 @@ module tb_openMSP430;
   msp_debug msp_debug_omsp1 (
 
     // OUTPUTs
-    .e_state      (omsp1_e_state),       // Execution state
-    .i_state      (omsp1_i_state),       // Instruction fetch state
-    .inst_cycle   (omsp1_inst_cycle),    // Cycle number within current instruction
-    .inst_full    (omsp1_inst_full),     // Currently executed instruction (full version)
-    .inst_number  (omsp1_inst_number),   // Instruction number since last system reset
-    .inst_pc      (omsp1_inst_pc),       // Instruction Program counter
-    .inst_short   (omsp1_inst_short),    // Currently executed instruction (short version)
+    .e_state0      (omsp01_e_state),       // Execution state
+    .i_state0      (omsp01_i_state),       // Instruction fetch state
+    .inst_cycle0   (omsp01_inst_cycle),    // Cycle number within current instruction
+    .inst_full0    (omsp01_inst_full),     // Currently executed instruction (full version)
+    .inst_number0  (omsp01_inst_number),   // Instruction number since last system reset
+    .inst_pc0      (omsp01_inst_pc),       // Instruction Program counter
+    .inst_short0   (omsp01_inst_short),    // Currently executed instruction (short version)
+
+    .e_state1      (omsp11_e_state),       // Execution state
+    .i_state1      (omsp11_i_state),       // Instruction fetch state
+    .inst_cycle1   (omsp11_inst_cycle),    // Cycle number within current instruction
+    .inst_full1    (omsp11_inst_full),     // Currently executed instruction (full version)
+    .inst_number1  (omsp11_inst_number),   // Instruction number since last system reset
+    .inst_pc1      (omsp11_inst_pc),       // Instruction Program counter
+    .inst_short1   (omsp11_inst_short),    // Currently executed instruction (short version)
 
     // INPUTs
     .core_select  (1'b1)                 // Core selection
@@ -543,7 +884,7 @@ module tb_openMSP430;
   end
 
   initial begin // Normal end of test
-    @(omsp0_inst_pc===16'hffff)
+    @(omsp00_inst_pc===16'hffff && omsp10_inst_pc===16'hffff)
     $display(" ===============================================");
     if (error!=0) begin
       $display("|               SIMULATION FAILED               |");

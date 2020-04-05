@@ -43,13 +43,21 @@
 module msp_debug (
 
   // OUTPUTs
-  e_state,                       // Execution state
-  i_state,                       // Instruction fetch state
-  inst_cycle,                    // Cycle number within current instruction
-  inst_full,                     // Currently executed instruction (full version)
-  inst_number,                   // Instruction number since last system reset
-  inst_pc,                       // Instruction Program counter
-  inst_short,                    // Currently executed instruction (short version)
+  e_state0,                       // Execution state
+  i_state0,                       // Instruction fetch state
+  inst_cycle0,                    // Cycle number within current instruction
+  inst_full0,                     // Currently executed instruction (full version)
+  inst_number0,                   // Instruction number since last system reset
+  inst_pc0,                       // Instruction Program counter
+  inst_short0,                    // Currently executed instruction (short version)
+
+  e_state1,                       // Execution state
+  i_state1,                       // Instruction fetch state
+  inst_cycle1,                    // Cycle number within current instruction
+  inst_full1,                     // Currently executed instruction (full version)
+  inst_number1,                   // Instruction number since last system reset
+  inst_pc1,                       // Instruction Program counter
+  inst_short1,                    // Currently executed instruction (short version)
 
   // INPUTs
   core_select                    // Core selection
@@ -57,13 +65,21 @@ module msp_debug (
 
   // OUTPUTs
   //============
-  output  [8*32-1:0] e_state;        // Execution state
-  output  [8*32-1:0] i_state;        // Instruction fetch state
-  output      [31:0] inst_cycle;     // Cycle number within current instruction
-  output  [8*32-1:0] inst_full;      // Currently executed instruction (full version)
-  output      [31:0] inst_number;    // Instruction number since last system reset
-  output      [15:0] inst_pc;        // Instruction Program counter
-  output  [8*32-1:0] inst_short;     // Currently executed instruction (short version)
+  output  [8*32-1:0] e_state0;        // Execution state
+  output  [8*32-1:0] i_state0;        // Instruction fetch state
+  output      [31:0] inst_cycle0;     // Cycle number within current instruction
+  output  [8*32-1:0] inst_full0;      // Currently executed instruction (full version)
+  output      [31:0] inst_number0;    // Instruction number since last system reset
+  output      [15:0] inst_pc0;        // Instruction Program counter
+  output  [8*32-1:0] inst_short0;     // Currently executed instruction (short version)
+
+  output  [8*32-1:0] e_state1;        // Execution state
+  output  [8*32-1:0] i_state1;        // Instruction fetch state
+  output      [31:0] inst_cycle1;     // Cycle number within current instruction
+  output  [8*32-1:0] inst_full1;      // Currently executed instruction (full version)
+  output      [31:0] inst_number1;    // Instruction number since last system reset
+  output      [15:0] inst_pc1;        // Instruction Program counter
+  output  [8*32-1:0] inst_short1;     // Currently executed instruction (short version)
 
   // INPUTs
   //============
@@ -110,372 +126,748 @@ module msp_debug (
   //=============================================================================
 
   //-------------------------
+  // SoC 0
+  //-------------------------
+
+  //-------------------------
   // CPU 0
   //-------------------------
-  wire  [2:0] omsp0_i_state_bin = tb_openMSP430.omsp0_i_state_bin;
-  wire  [3:0] omsp0_e_state_bin = tb_openMSP430.omsp0_e_state_bin;
+  wire  [2:0] omsp00_i_state_bin = tb_openMSP430.omsp00_i_state_bin;
+  wire  [3:0] omsp00_e_state_bin = tb_openMSP430.omsp00_e_state_bin;
 
-  wire        omsp0_decode      = tb_openMSP430.omsp0_decode;
-  wire [15:0] omsp0_ir          = tb_openMSP430.omsp0_ir;
-  wire        omsp0_irq_detect  = tb_openMSP430.omsp0_irq_detect;
-  wire  [3:0] omsp0_irq_num     = tb_openMSP430.omsp0_irq_num;
-  wire [15:0] omsp0_pc          = tb_openMSP430.omsp0_pc;
+  wire        omsp00_decode      = tb_openMSP430.omsp00_decode;
+  wire [15:0] omsp00_ir          = tb_openMSP430.omsp00_ir;
+  wire        omsp00_irq_detect  = tb_openMSP430.omsp00_irq_detect;
+  wire  [3:0] omsp00_irq_num     = tb_openMSP430.omsp00_irq_num;
+  wire [15:0] omsp00_pc          = tb_openMSP430.omsp00_pc;
 
-  wire        omsp0_mclk        = tb_openMSP430.omsp0_mclk;
-  wire        omsp0_puc_rst     = tb_openMSP430.omsp0_puc_rst;
+  wire        omsp00_mclk        = tb_openMSP430.omsp00_mclk;
+  wire        omsp00_puc_rst     = tb_openMSP430.omsp00_puc_rst;
 
   //-------------------------
   // CPU 1
   //-------------------------
-  wire  [2:0] omsp1_i_state_bin = tb_openMSP430.omsp1_i_state_bin;
-  wire  [3:0] omsp1_e_state_bin = tb_openMSP430.omsp1_e_state_bin;
+  wire  [2:0] omsp01_i_state_bin = tb_openMSP430.omsp01_i_state_bin;
+  wire  [3:0] omsp01_e_state_bin = tb_openMSP430.omsp01_e_state_bin;
 
-  wire        omsp1_decode      = tb_openMSP430.omsp1_decode;
-  wire [15:0] omsp1_ir          = tb_openMSP430.omsp1_ir;
-  wire        omsp1_irq_detect  = tb_openMSP430.omsp1_irq_detect;
-  wire  [3:0] omsp1_irq_num     = tb_openMSP430.omsp1_irq_num;
-  wire [15:0] omsp1_pc          = tb_openMSP430.omsp1_pc;
+  wire        omsp01_decode      = tb_openMSP430.omsp01_decode;
+  wire [15:0] omsp01_ir          = tb_openMSP430.omsp01_ir;
+  wire        omsp01_irq_detect  = tb_openMSP430.omsp01_irq_detect;
+  wire  [3:0] omsp01_irq_num     = tb_openMSP430.omsp01_irq_num;
+  wire [15:0] omsp01_pc          = tb_openMSP430.omsp01_pc;
 
-  wire        omsp1_mclk        = tb_openMSP430.omsp1_mclk;
-  wire        omsp1_puc_rst     = tb_openMSP430.omsp1_puc_rst;
+  wire        omsp01_mclk        = tb_openMSP430.omsp01_mclk;
+  wire        omsp01_puc_rst     = tb_openMSP430.omsp01_puc_rst;
 
   //-------------------------
-  // CPU Selection
+  // SoC 1
   //-------------------------
-  wire  [2:0] i_state_bin = core_select ? omsp1_i_state_bin : omsp0_i_state_bin;
-  wire  [3:0] e_state_bin = core_select ? omsp1_e_state_bin : omsp0_e_state_bin;
 
-  wire        decode      = core_select ? omsp1_decode      : omsp0_decode;
-  wire [15:0] ir          = core_select ? omsp1_ir          : omsp0_ir;
-  wire        irq_detect  = core_select ? omsp1_irq_detect  : omsp0_irq_detect;
-  wire  [3:0] irq_num     = core_select ? omsp1_irq_num     : omsp0_irq_num;
-  wire [15:0] pc          = core_select ? omsp1_pc          : omsp0_pc;
+  //-------------------------
+  // CPU 0
+  //-------------------------
+  wire  [2:0] omsp10_i_state_bin = tb_openMSP430.omsp10_i_state_bin;
+  wire  [3:0] omsp10_e_state_bin = tb_openMSP430.omsp10_e_state_bin;
 
-  wire        mclk        = core_select ? omsp1_mclk        : omsp0_mclk;
-  wire        puc_rst     = core_select ? omsp1_puc_rst     : omsp0_puc_rst;
+  wire        omsp10_decode      = tb_openMSP430.omsp10_decode;
+  wire [15:0] omsp10_ir          = tb_openMSP430.omsp10_ir;
+  wire        omsp10_irq_detect  = tb_openMSP430.omsp10_irq_detect;
+  wire  [3:0] omsp10_irq_num     = tb_openMSP430.omsp10_irq_num;
+  wire [15:0] omsp10_pc          = tb_openMSP430.omsp10_pc;
+
+  wire        omsp10_mclk        = tb_openMSP430.omsp10_mclk;
+  wire        omsp10_puc_rst     = tb_openMSP430.omsp10_puc_rst;
+
+  //-------------------------
+  // CPU 1
+  //-------------------------
+  wire  [2:0] omsp11_i_state_bin = tb_openMSP430.omsp11_i_state_bin;
+  wire  [3:0] omsp11_e_state_bin = tb_openMSP430.omsp11_e_state_bin;
+
+  wire        omsp11_decode      = tb_openMSP430.omsp11_decode;
+  wire [15:0] omsp11_ir          = tb_openMSP430.omsp11_ir;
+  wire        omsp11_irq_detect  = tb_openMSP430.omsp11_irq_detect;
+  wire  [3:0] omsp11_irq_num     = tb_openMSP430.omsp11_irq_num;
+  wire [15:0] omsp11_pc          = tb_openMSP430.omsp11_pc;
+
+  wire        omsp11_mclk        = tb_openMSP430.omsp11_mclk;
+  wire        omsp11_puc_rst     = tb_openMSP430.omsp11_puc_rst;
+
+  //-------------------------
+  // CPU Selection 0
+  //-------------------------
+  wire  [2:0] i_state_bin0 = core_select ? omsp01_i_state_bin : omsp00_i_state_bin;
+  wire  [3:0] e_state_bin0 = core_select ? omsp01_e_state_bin : omsp00_e_state_bin;
+
+  wire        decode0      = core_select ? omsp01_decode      : omsp00_decode;
+  wire [15:0] ir0          = core_select ? omsp01_ir          : omsp00_ir;
+  wire        irq_detect0  = core_select ? omsp01_irq_detect  : omsp00_irq_detect;
+  wire  [3:0] irq_num0     = core_select ? omsp01_irq_num     : omsp00_irq_num;
+  wire [15:0] pc0          = core_select ? omsp01_pc          : omsp00_pc;
+
+  wire        mclk0        = core_select ? omsp01_mclk        : omsp00_mclk;
+  wire        puc_rst0     = core_select ? omsp01_puc_rst     : omsp00_puc_rst;
+
+  //-------------------------
+  // CPU Selection 1
+  //-------------------------
+  wire  [2:0] i_state_bin1 = core_select ? omsp11_i_state_bin : omsp10_i_state_bin;
+  wire  [3:0] e_state_bin1 = core_select ? omsp11_e_state_bin : omsp10_e_state_bin;
+
+  wire        decode1      = core_select ? omsp11_decode      : omsp10_decode;
+  wire [15:0] ir1          = core_select ? omsp11_ir          : omsp10_ir;
+  wire        irq_detect1  = core_select ? omsp11_irq_detect  : omsp10_irq_detect;
+  wire  [3:0] irq_num1     = core_select ? omsp11_irq_num     : omsp10_irq_num;
+  wire [15:0] pc1          = core_select ? omsp11_pc          : omsp10_pc;
+
+  wire        mclk1        = core_select ? omsp11_mclk        : omsp10_mclk;
+  wire        puc_rst1     = core_select ? omsp11_puc_rst     : omsp10_puc_rst;
 
 
   //=============================================================================
-  // 3) GENERATE DEBUG SIGNALS
+  // 3) GENERATE DEBUG SIGNALS 0
   //=============================================================================
 
   // Instruction fetch state
   //=========================
-  reg [8*32-1:0] i_state;
+  reg [8*32-1:0] i_state0;
 
-  always @(i_state_bin) begin
-    case(i_state_bin)
-      3'h0    : i_state =  "IRQ_FETCH";
-      3'h1    : i_state =  "IRQ_DONE";
-      3'h2    : i_state =  "DEC";
-      3'h3    : i_state =  "EXT1";
-      3'h4    : i_state =  "EXT2";
-      3'h5    : i_state =  "IDLE";
-      default : i_state =  "XXXXX";
+  always @(i_state_bin0) begin
+    case(i_state_bin0)
+      3'h0    : i_state0 =  "IRQ_FETCH";
+      3'h1    : i_state0 =  "IRQ_DONE";
+      3'h2    : i_state0 =  "DEC";
+      3'h3    : i_state0 =  "EXT1";
+      3'h4    : i_state0 =  "EXT2";
+      3'h5    : i_state0 =  "IDLE";
+      default : i_state0 =  "XXXXX";
     endcase
   end
 
   // Execution state
   //=========================
 
-  reg [8*32-1:0] e_state;
+  reg [8*32-1:0] e_state0;
 
-  always @(e_state_bin) begin
-    case(e_state_bin)
-      4'h2    : e_state =  "IRQ_0";
-      4'h1    : e_state =  "IRQ_1";
-      4'h0    : e_state =  "IRQ_2";
-      4'h3    : e_state =  "IRQ_3";
-      4'h4    : e_state =  "IRQ_4";
-      4'h5    : e_state =  "SRC_AD";
-      4'h6    : e_state =  "SRC_RD";
-      4'h7    : e_state =  "SRC_WR";
-      4'h8    : e_state =  "DST_AD";
-      4'h9    : e_state =  "DST_RD";
-      4'hA    : e_state =  "DST_WR";
-      4'hB    : e_state =  "EXEC";
-      4'hC    : e_state =  "JUMP";
-      4'hD    : e_state =  "IDLE";
-      default : e_state =  "xxxx";
+  always @(e_state_bin0) begin
+    case(e_state_bin0)
+      4'h2    : e_state0 =  "IRQ_0";
+      4'h1    : e_state0 =  "IRQ_1";
+      4'h0    : e_state0 =  "IRQ_2";
+      4'h3    : e_state0 =  "IRQ_3";
+      4'h4    : e_state0 =  "IRQ_4";
+      4'h5    : e_state0 =  "SRC_AD";
+      4'h6    : e_state0 =  "SRC_RD";
+      4'h7    : e_state0 =  "SRC_WR";
+      4'h8    : e_state0 =  "DST_AD";
+      4'h9    : e_state0 =  "DST_RD";
+      4'hA    : e_state0 =  "DST_WR";
+      4'hB    : e_state0 =  "EXEC";
+      4'hC    : e_state0 =  "JUMP";
+      4'hD    : e_state0 =  "IDLE";
+      default : e_state0 =  "xxxx";
     endcase
   end
 
   // Count instruction number & cycles
   //====================================
 
-  reg [31:0]  inst_number;
-  always @(posedge mclk or posedge puc_rst) begin
-    if (puc_rst)     inst_number  <= 0;
-    else if (decode) inst_number  <= inst_number+1;
+  reg [31:0]  inst_number0;
+  always @(posedge mclk0 or posedge puc_rst0) begin
+    if (puc_rst0)     inst_number0  <= 0;
+    else if (decode0) inst_number0  <= inst_number0+1;
   end
 
-  reg [31:0]  inst_cycle;
-  always @(posedge mclk or posedge puc_rst) begin
-    if (puc_rst)     inst_cycle <= 0;
-    else if (decode) inst_cycle <= 0;
-    else             inst_cycle <= inst_cycle+1;
+  reg [31:0]  inst_cycle0;
+  always @(posedge mclk0 or posedge puc_rst0) begin
+    if (puc_rst0)     inst_cycle0 <= 0;
+    else if (decode0) inst_cycle0 <= 0;
+    else              inst_cycle0 <= inst_cycle0+1;
   end
 
   // Decode instruction
   //====================================
 
-  // Buffer opcode
-  reg [15:0]  opcode;
-  always @(posedge mclk or posedge puc_rst) begin
-    if (puc_rst)     opcode  <= 0;
-    else if (decode) opcode  <= ir;
+  // Buffer opcode0
+  reg [15:0]  opcode0;
+  always @(posedge mclk0 or posedge puc_rst0) begin
+    if (puc_rst0)     opcode0  <= 0;
+    else if (decode0) opcode0  <= ir0;
   end
 
   // Interrupts
-  reg irq;
-  always @(posedge mclk or posedge puc_rst) begin
-    if (puc_rst)     irq     <= 1'b1;
-    else if (decode) irq     <= irq_detect;
+  reg irq0;
+  always @(posedge mclk0 or posedge puc_rst0) begin
+    if (puc_rst0)     irq0     <= 1'b1;
+    else if (decode0) irq0     <= irq_detect0;
   end
 
   // Instruction type
-  reg [8*32-1:0] inst_type;
-  always @(opcode or irq) begin
-    if (irq)
-      inst_type =  "IRQ";
+  reg [8*32-1:0] inst_type0;
+  always @(opcode0 or irq0) begin
+    if (irq0)
+      inst_type0 =  "IRQ";
     else
-      case(opcode[15:13])
-        3'b000  : inst_type =  "SIG-OP";
-        3'b001  : inst_type =  "JUMP";
-        default : inst_type =  "TWO-OP";
+      case(opcode0[15:13])
+        3'b000  : inst_type0 =  "SIG-OP";
+        3'b001  : inst_type0 =  "JUMP";
+        default : inst_type0 =  "TWO-OP";
       endcase
   end
 
   // Instructions name
-  reg [8*32-1:0] inst_name;
-  always @(opcode or inst_type or irq_num) begin
-    if (inst_type=="IRQ")
-      case(irq_num[3:0])
-        4'b0000        : inst_name =  "IRQ 0";
-        4'b0001        : inst_name =  "IRQ 1";
-        4'b0010        : inst_name =  "IRQ 2";
-        4'b0011        : inst_name =  "IRQ 3";
-        4'b0100        : inst_name =  "IRQ 4";
-        4'b0101        : inst_name =  "IRQ 5";
-        4'b0110        : inst_name =  "IRQ 6";
-        4'b0111        : inst_name =  "IRQ 7";
-        4'b1000        : inst_name =  "IRQ 8";
-        4'b1001        : inst_name =  "IRQ 9";
-        4'b1010        : inst_name =  "IRQ 10";
-        4'b1011        : inst_name =  "IRQ 11";
-        4'b1100        : inst_name =  "IRQ 12";
-        4'b1101        : inst_name =  "IRQ 13";
-        4'b1110        : inst_name =  "NMI";
-        default        : inst_name =  "RESET";
+  reg [8*32-1:0] inst_name0;
+  always @(opcode0 or inst_type0 or irq_num0) begin
+    if (inst_type0=="IRQ")
+      case(irq_num0[3:0])
+        4'b0000        : inst_name0 =  "IRQ 0";
+        4'b0001        : inst_name0 =  "IRQ 1";
+        4'b0010        : inst_name0 =  "IRQ 2";
+        4'b0011        : inst_name0 =  "IRQ 3";
+        4'b0100        : inst_name0 =  "IRQ 4";
+        4'b0101        : inst_name0 =  "IRQ 5";
+        4'b0110        : inst_name0 =  "IRQ 6";
+        4'b0111        : inst_name0 =  "IRQ 7";
+        4'b1000        : inst_name0 =  "IRQ 8";
+        4'b1001        : inst_name0 =  "IRQ 9";
+        4'b1010        : inst_name0 =  "IRQ 10";
+        4'b1011        : inst_name0 =  "IRQ 11";
+        4'b1100        : inst_name0 =  "IRQ 12";
+        4'b1101        : inst_name0 =  "IRQ 13";
+        4'b1110        : inst_name0 =  "NMI";
+        default        : inst_name0 =  "RESET";
       endcase
-    else if (inst_type=="SIG-OP")
-      case(opcode[15:7])
-        9'b000100_000  : inst_name =  "RRC";
-        9'b000100_001  : inst_name =  "SWPB";
-        9'b000100_010  : inst_name =  "RRA";
-        9'b000100_011  : inst_name =  "SXT";
-        9'b000100_100  : inst_name =  "PUSH";
-        9'b000100_101  : inst_name =  "CALL";
-        9'b000100_110  : inst_name =  "RETI";
-        default        : inst_name =  "xxxx";
+    else if (inst_type0=="SIG-OP")
+      case(opcode0[15:7])
+        9'b000100_000  : inst_name0 =  "RRC";
+        9'b000100_001  : inst_name0 =  "SWPB";
+        9'b000100_010  : inst_name0 =  "RRA";
+        9'b000100_011  : inst_name0 =  "SXT";
+        9'b000100_100  : inst_name0 =  "PUSH";
+        9'b000100_101  : inst_name0 =  "CALL";
+        9'b000100_110  : inst_name0 =  "RETI";
+        default        : inst_name0 =  "xxxx";
       endcase
-    else if (inst_type=="JUMP")
-      case(opcode[15:10])
-        6'b001_000     : inst_name =  "JNE";
-        6'b001_001     : inst_name =  "JEQ";
-        6'b001_010     : inst_name =  "JNC";
-        6'b001_011     : inst_name =  "JC";
-        6'b001_100     : inst_name =  "JN";
-        6'b001_101     : inst_name =  "JGE";
-        6'b001_110     : inst_name =  "JL";
-        6'b001_111     : inst_name =  "JMP";
-        default        : inst_name =  "xxxx";
+    else if (inst_type0=="JUMP")
+      case(opcode0[15:10])
+        6'b001_000     : inst_name0 =  "JNE";
+        6'b001_001     : inst_name0 =  "JEQ";
+        6'b001_010     : inst_name0 =  "JNC";
+        6'b001_011     : inst_name0 =  "JC";
+        6'b001_100     : inst_name0 =  "JN";
+        6'b001_101     : inst_name0 =  "JGE";
+        6'b001_110     : inst_name0 =  "JL";
+        6'b001_111     : inst_name0 =  "JMP";
+        default        : inst_name0 =  "xxxx";
       endcase
-    else if (inst_type=="TWO-OP")
-      case(opcode[15:12])
-        4'b0100        : inst_name =  "MOV";
-        4'b0101        : inst_name =  "ADD";
-        4'b0110        : inst_name =  "ADDC";
-        4'b0111        : inst_name =  "SUBC";
-        4'b1000        : inst_name =  "SUB";
-        4'b1001        : inst_name =  "CMP";
-        4'b1010        : inst_name =  "DADD";
-        4'b1011        : inst_name =  "BIT";
-        4'b1100        : inst_name =  "BIC";
-        4'b1101        : inst_name =  "BIS";
-        4'b1110        : inst_name =  "XOR";
-        4'b1111        : inst_name =  "AND";
-        default        : inst_name =  "xxxx";
+    else if (inst_type0=="TWO-OP")
+      case(opcode0[15:12])
+        4'b0100        : inst_name0 =  "MOV";
+        4'b0101        : inst_name0 =  "ADD";
+        4'b0110        : inst_name0 =  "ADDC";
+        4'b0111        : inst_name0 =  "SUBC";
+        4'b1000        : inst_name0 =  "SUB";
+        4'b1001        : inst_name0 =  "CMP";
+        4'b1010        : inst_name0 =  "DADD";
+        4'b1011        : inst_name0 =  "BIT";
+        4'b1100        : inst_name0 =  "BIC";
+        4'b1101        : inst_name0 =  "BIS";
+        4'b1110        : inst_name0 =  "XOR";
+        4'b1111        : inst_name0 =  "AND";
+        default        : inst_name0 =  "xxxx";
       endcase
   end
 
   // Instructions byte/word mode
-  reg [8*32-1:0] inst_bw;
-  always @(opcode or inst_type) begin
-    if (inst_type=="IRQ")
-      inst_bw =  "";
-    else if (inst_type=="SIG-OP")
-      inst_bw =  opcode[6] ? ".B" : "";
-    else if (inst_type=="JUMP")
-      inst_bw =  "";
-    else if (inst_type=="TWO-OP")
-      inst_bw =  opcode[6] ? ".B" : "";
+  reg [8*32-1:0] inst_bw0;
+  always @(opcode0 or inst_type0) begin
+    if (inst_type0=="IRQ")
+      inst_bw0 =  "";
+    else if (inst_type0=="SIG-OP")
+      inst_bw0 =  opcode0[6] ? ".B" : "";
+    else if (inst_type0=="JUMP")
+      inst_bw0 =  "";
+    else if (inst_type0=="TWO-OP")
+      inst_bw0 =  opcode0[6] ? ".B" : "";
   end
 
   // Source register
-  reg [8*32-1:0] inst_src;
-  wire     [3:0] src_reg = (inst_type=="SIG-OP") ? opcode[3:0] : opcode[11:8];
+  reg [8*32-1:0] inst_src0;
+  wire     [3:0] src_reg0 = (inst_type0=="SIG-OP") ? opcode0[3:0] : opcode0[11:8];
 
-  always @(src_reg or inst_type) begin
-    if (inst_type=="IRQ")
-      inst_src =  "";
-    else if (inst_type=="JUMP")
-      inst_src =  "";
-    else if ((inst_type=="SIG-OP") || (inst_type=="TWO-OP"))
-      case(src_reg)
-        4'b0000 : inst_src =  "r0";
-        4'b0001 : inst_src =  "r1";
-        4'b0010 : inst_src =  "r2";
-        4'b0011 : inst_src =  "r3";
-        4'b0100 : inst_src =  "r4";
-        4'b0101 : inst_src =  "r5";
-        4'b0110 : inst_src =  "r6";
-        4'b0111 : inst_src =  "r7";
-        4'b1000 : inst_src =  "r8";
-        4'b1001 : inst_src =  "r9";
-        4'b1010 : inst_src =  "r10";
-        4'b1011 : inst_src =  "r11";
-        4'b1100 : inst_src =  "r12";
-        4'b1101 : inst_src =  "r13";
-        4'b1110 : inst_src =  "r14";
-        default : inst_src =  "r15";
+  always @(src_reg0 or inst_type0) begin
+    if (inst_type0=="IRQ")
+      inst_src0 =  "";
+    else if (inst_type0=="JUMP")
+      inst_src0 =  "";
+    else if ((inst_type0=="SIG-OP") || (inst_type0=="TWO-OP"))
+      case(src_reg0)
+        4'b0000 : inst_src0 =  "r0";
+        4'b0001 : inst_src0 =  "r1";
+        4'b0010 : inst_src0 =  "r2";
+        4'b0011 : inst_src0 =  "r3";
+        4'b0100 : inst_src0 =  "r4";
+        4'b0101 : inst_src0 =  "r5";
+        4'b0110 : inst_src0 =  "r6";
+        4'b0111 : inst_src0 =  "r7";
+        4'b1000 : inst_src0 =  "r8";
+        4'b1001 : inst_src0 =  "r9";
+        4'b1010 : inst_src0 =  "r10";
+        4'b1011 : inst_src0 =  "r11";
+        4'b1100 : inst_src0 =  "r12";
+        4'b1101 : inst_src0 =  "r13";
+        4'b1110 : inst_src0 =  "r14";
+        default : inst_src0 =  "r15";
       endcase
   end
 
   // Destination register
-  reg [8*32-1:0] inst_dst;
-  always @(opcode or inst_type) begin
-    if (inst_type=="IRQ")
-      inst_dst =  "";
-    else if (inst_type=="SIG-OP")
-      inst_dst =  "";
-    else if (inst_type=="JUMP")
-      inst_dst =  "";
-    else if (inst_type=="TWO-OP")
-      case(opcode[3:0])
-        4'b0000 : inst_dst =  "r0";
-        4'b0001 : inst_dst =  "r1";
-        4'b0010 : inst_dst =  "r2";
-        4'b0011 : inst_dst =  "r3";
-        4'b0100 : inst_dst =  "r4";
-        4'b0101 : inst_dst =  "r5";
-        4'b0110 : inst_dst =  "r6";
-        4'b0111 : inst_dst =  "r7";
-        4'b1000 : inst_dst =  "r8";
-        4'b1001 : inst_dst =  "r9";
-        4'b1010 : inst_dst =  "r10";
-        4'b1011 : inst_dst =  "r11";
-        4'b1100 : inst_dst =  "r12";
-        4'b1101 : inst_dst =  "r13";
-        4'b1110 : inst_dst =  "r14";
-        default : inst_dst =  "r15";
+  reg [8*32-1:0] inst_dst0;
+  always @(opcode0 or inst_type0) begin
+    if (inst_type0=="IRQ")
+      inst_dst0 =  "";
+    else if (inst_type0=="SIG-OP")
+      inst_dst0 =  "";
+    else if (inst_type0=="JUMP")
+      inst_dst0 =  "";
+    else if (inst_type0=="TWO-OP")
+      case(opcode0[3:0])
+        4'b0000 : inst_dst0 =  "r0";
+        4'b0001 : inst_dst0 =  "r1";
+        4'b0010 : inst_dst0 =  "r2";
+        4'b0011 : inst_dst0 =  "r3";
+        4'b0100 : inst_dst0 =  "r4";
+        4'b0101 : inst_dst0 =  "r5";
+        4'b0110 : inst_dst0 =  "r6";
+        4'b0111 : inst_dst0 =  "r7";
+        4'b1000 : inst_dst0 =  "r8";
+        4'b1001 : inst_dst0 =  "r9";
+        4'b1010 : inst_dst0 =  "r10";
+        4'b1011 : inst_dst0 =  "r11";
+        4'b1100 : inst_dst0 =  "r12";
+        4'b1101 : inst_dst0 =  "r13";
+        4'b1110 : inst_dst0 =  "r14";
+        default : inst_dst0 =  "r15";
       endcase
   end
 
   // Source Addressing mode
-  reg [8*32-1:0] inst_as;
-  always @(inst_type or src_reg or opcode or inst_src) begin
-    if (inst_type=="IRQ")
-      inst_as =  "";
-    else if (inst_type=="JUMP")
-      inst_as =  "";
-    else if (src_reg==4'h3) // Addressing mode using R3
-      case (opcode[5:4])
-        2'b11  : inst_as =  "#-1";
-        2'b10  : inst_as =  "#2";
-        2'b01  : inst_as =  "#1";
-        default: inst_as =  "#0";
+  reg [8*32-1:0] inst_as0;
+  always @(inst_type0 or src_reg0 or opcode0 or inst_src0) begin
+    if (inst_type0=="IRQ")
+      inst_as0 =  "";
+    else if (inst_type0=="JUMP")
+      inst_as0 =  "";
+    else if (src_reg0==4'h3) // Addressing mode using R3
+      case (opcode0[5:4])
+        2'b11  : inst_as0 =  "#-1";
+        2'b10  : inst_as0 =  "#2";
+        2'b01  : inst_as0 =  "#1";
+        default: inst_as0 =  "#0";
       endcase
-    else if (src_reg==4'h2) // Addressing mode using R2
-      case (opcode[5:4])
-        2'b11  : inst_as =  "#8";
-        2'b10  : inst_as =  "#4";
-        2'b01  : inst_as =  "&EDE";
-        default: inst_as =  inst_src;
+    else if (src_reg0==4'h2) // Addressing mode using R2
+      case (opcode0[5:4])
+        2'b11  : inst_as0 =  "#8";
+        2'b10  : inst_as0 =  "#4";
+        2'b01  : inst_as0 =  "&EDE";
+        default: inst_as0 =  inst_src0;
       endcase
-    else if (src_reg==4'h0) // Addressing mode using R0
-      case (opcode[5:4])
-        2'b11  : inst_as =  "#N";
-        2'b10  : inst_as =  myFormat("@", inst_src, 0);
-        2'b01  : inst_as =  "EDE";
-        default: inst_as =  inst_src;
+    else if (src_reg0==4'h0) // Addressing mode using R0
+      case (opcode0[5:4])
+        2'b11  : inst_as0 =  "#N";
+        2'b10  : inst_as0 =  myFormat("@", inst_src0, 0);
+        2'b01  : inst_as0 =  "EDE";
+        default: inst_as0 =  inst_src0;
       endcase
     else                    // General Addressing mode
-      case (opcode[5:4])
+      case (opcode0[5:4])
         2'b11  : begin
-          inst_as =  myFormat("@", inst_src, 0);
-          inst_as =  myFormat(inst_as, "+", 0);
+          inst_as0 =  myFormat("@", inst_src0, 0);
+          inst_as0 =  myFormat(inst_as0, "+", 0);
         end
-        2'b10  : inst_as =  myFormat("@", inst_src, 0);
+        2'b10  : inst_as0 =  myFormat("@", inst_src0, 0);
         2'b01  : begin
-          inst_as =  myFormat("x(", inst_src, 0);
-          inst_as =  myFormat(inst_as, ")", 0);
+          inst_as0 =  myFormat("x(", inst_src0, 0);
+          inst_as0 =  myFormat(inst_as0, ")", 0);
         end
-        default: inst_as =  inst_src;
+        default: inst_as0 =  inst_src0;
       endcase
   end
 
   // Destination Addressing mode
-  reg [8*32-1:0] inst_ad;
-  always @(opcode or inst_type or inst_dst) begin
-    if (inst_type!="TWO-OP")
-      inst_ad =  "";
-    else if (opcode[3:0]==4'h2)   // Addressing mode using R2
-      case (opcode[7])
-        1'b1   : inst_ad =  "&EDE";
-        default: inst_ad =  inst_dst;
+  reg [8*32-1:0] inst_ad0;
+  always @(opcode0 or inst_type0 or inst_dst0) begin
+    if (inst_type0!="TWO-OP")
+      inst_ad0 =  "";
+    else if (opcode0[3:0]==4'h2)   // Addressing mode using R2
+      case (opcode0[7])
+        1'b1   : inst_ad0 =  "&EDE";
+        default: inst_ad0 =  inst_dst0;
       endcase
-    else if (opcode[3:0]==4'h0)   // Addressing mode using R0
-      case (opcode[7])
-        2'b1   : inst_ad =  "EDE";
-        default: inst_ad =  inst_dst;
+    else if (opcode0[3:0]==4'h0)   // Addressing mode using R0
+      case (opcode0[7])
+        2'b1   : inst_ad0 =  "EDE";
+        default: inst_ad0 =  inst_dst0;
       endcase
     else                          // General Addressing mode
-      case (opcode[7])
+      case (opcode0[7])
         2'b1   : begin
-          inst_ad =  myFormat("x(", inst_dst, 0);
-          inst_ad =  myFormat(inst_ad, ")", 0);
+          inst_ad0 =  myFormat("x(", inst_dst0, 0);
+          inst_ad0 =  myFormat(inst_ad0, ")", 0);
         end
-        default: inst_ad =  inst_dst;
+        default: inst_ad0 =  inst_dst0;
       endcase
   end
 
   // Currently executed instruction
   //================================
 
-  wire [8*32-1:0] inst_short = inst_name;
+  wire [8*32-1:0] inst_short0 = inst_name0;
 
-  reg  [8*32-1:0] inst_full;
-  always @(inst_type or inst_name or inst_bw or inst_as or inst_ad) begin
-    inst_full   = myFormat(inst_name, inst_bw, 0);
-    inst_full   = myFormat(inst_full, inst_as, 1);
-    if (inst_type=="TWO-OP")
-      inst_full = myFormat(inst_full, ",",     0);
-    inst_full   = myFormat(inst_full, inst_ad, 1);
-    if (opcode==16'h4303)
-      inst_full = "NOP";
-    if (opcode==`DBG_SWBRK_OP)
-      inst_full = "SBREAK";
+  reg  [8*32-1:0] inst_full0;
+  always @(inst_type0 or inst_name0 or inst_bw0 or inst_as0 or inst_ad0) begin
+    inst_full0   = myFormat(inst_name0, inst_bw0, 0);
+    inst_full0   = myFormat(inst_full0, inst_as0, 1);
+    if (inst_type0=="TWO-OP")
+      inst_full0 = myFormat(inst_full0, ",",     0);
+    inst_full0   = myFormat(inst_full0, inst_ad0, 1);
+    if (opcode0==16'h4303)
+      inst_full0 = "NOP";
+    if (opcode0==`DBG_SWBRK_OP)
+      inst_full0 = "SBREAK";
   end
 
 
   // Instruction program counter
   //================================
 
-  reg  [15:0] inst_pc;
-  always @(posedge mclk or posedge puc_rst) begin
-    if (puc_rst)     inst_pc  <=  16'h0000;
-    else if (decode) inst_pc  <=  pc;
+  reg  [15:0] inst_pc0;
+  always @(posedge mclk0 or posedge puc_rst0) begin
+    if (puc_rst0)     inst_pc0  <=  16'h0000;
+    else if (decode0) inst_pc0  <=  pc0;
+  end
+
+  //=============================================================================
+  // 4) GENERATE DEBUG SIGNALS 1
+  //=============================================================================
+
+  // Instruction fetch state
+  //=========================
+  reg [8*32-1:0] i_state1;
+
+  always @(i_state_bin1) begin
+    case(i_state_bin1)
+      3'h0    : i_state1 =  "IRQ_FETCH";
+      3'h1    : i_state1 =  "IRQ_DONE";
+      3'h2    : i_state1 =  "DEC";
+      3'h3    : i_state1 =  "EXT1";
+      3'h4    : i_state1 =  "EXT2";
+      3'h5    : i_state1 =  "IDLE";
+      default : i_state1 =  "XXXXX";
+    endcase
+  end
+
+  // Execution state
+  //=========================
+
+  reg [8*32-1:0] e_state1;
+
+  always @(e_state_bin1) begin
+    case(e_state_bin1)
+      4'h2    : e_state1 =  "IRQ_0";
+      4'h1    : e_state1 =  "IRQ_1";
+      4'h0    : e_state1 =  "IRQ_2";
+      4'h3    : e_state1 =  "IRQ_3";
+      4'h4    : e_state1 =  "IRQ_4";
+      4'h5    : e_state1 =  "SRC_AD";
+      4'h6    : e_state1 =  "SRC_RD";
+      4'h7    : e_state1 =  "SRC_WR";
+      4'h8    : e_state1 =  "DST_AD";
+      4'h9    : e_state1 =  "DST_RD";
+      4'hA    : e_state1 =  "DST_WR";
+      4'hB    : e_state1 =  "EXEC";
+      4'hC    : e_state1 =  "JUMP";
+      4'hD    : e_state1 =  "IDLE";
+      default : e_state1 =  "xxxx";
+    endcase
+  end
+
+  // Count instruction number & cycles
+  //====================================
+
+  reg [31:0]  inst_number1;
+  always @(posedge mclk1 or posedge puc_rst1) begin
+    if (puc_rst1)     inst_number1  <= 0;
+    else if (decode1) inst_number1  <= inst_number1+1;
+  end
+
+  reg [31:0]  inst_cycle1;
+  always @(posedge mclk1 or posedge puc_rst1) begin
+    if (puc_rst1)     inst_cycle1 <= 0;
+    else if (decode1) inst_cycle1 <= 0;
+    else              inst_cycle1 <= inst_cycle1+1;
+  end
+
+  // Decode instruction
+  //====================================
+
+  // Buffer opcode1
+  reg [15:0]  opcode1;
+  always @(posedge mclk1 or posedge puc_rst1) begin
+    if (puc_rst1)     opcode1  <= 0;
+    else if (decode1) opcode1  <= ir1;
+  end
+
+  // Interrupts
+  reg irq1;
+  always @(posedge mclk1 or posedge puc_rst1) begin
+    if (puc_rst1)     irq1     <= 1'b1;
+    else if (decode1) irq1     <= irq_detect0;
+  end
+
+  // Instruction type
+  reg [8*32-1:0] inst_type1;
+  always @(opcode1 or irq1) begin
+    if (irq1)
+      inst_type1 =  "IRQ";
+    else
+      case(opcode1[15:13])
+        3'b000  : inst_type1 =  "SIG-OP";
+        3'b001  : inst_type1 =  "JUMP";
+        default : inst_type1 =  "TWO-OP";
+      endcase
+  end
+
+  // Instructions name
+  reg [8*32-1:0] inst_name1;
+  always @(opcode1 or inst_type1 or irq_num1) begin
+    if (inst_type1=="IRQ")
+      case(irq_num1[3:0])
+        4'b0000        : inst_name1 =  "IRQ 0";
+        4'b0001        : inst_name1 =  "IRQ 1";
+        4'b0010        : inst_name1 =  "IRQ 2";
+        4'b0011        : inst_name1 =  "IRQ 3";
+        4'b0100        : inst_name1 =  "IRQ 4";
+        4'b0101        : inst_name1 =  "IRQ 5";
+        4'b0110        : inst_name1 =  "IRQ 6";
+        4'b0111        : inst_name1 =  "IRQ 7";
+        4'b1000        : inst_name1 =  "IRQ 8";
+        4'b1001        : inst_name1 =  "IRQ 9";
+        4'b1010        : inst_name1 =  "IRQ 10";
+        4'b1011        : inst_name1 =  "IRQ 11";
+        4'b1100        : inst_name1 =  "IRQ 12";
+        4'b1101        : inst_name1 =  "IRQ 13";
+        4'b1110        : inst_name1 =  "NMI";
+        default        : inst_name1 =  "RESET";
+      endcase
+    else if (inst_type1=="SIG-OP")
+      case(opcode1[15:7])
+        9'b000100_000  : inst_name1 =  "RRC";
+        9'b000100_001  : inst_name1 =  "SWPB";
+        9'b000100_010  : inst_name1 =  "RRA";
+        9'b000100_011  : inst_name1 =  "SXT";
+        9'b000100_100  : inst_name1 =  "PUSH";
+        9'b000100_101  : inst_name1 =  "CALL";
+        9'b000100_110  : inst_name1 =  "RETI";
+        default        : inst_name1 =  "xxxx";
+      endcase
+    else if (inst_type1=="JUMP")
+      case(opcode1[15:10])
+        6'b001_000     : inst_name1 =  "JNE";
+        6'b001_001     : inst_name1 =  "JEQ";
+        6'b001_010     : inst_name1 =  "JNC";
+        6'b001_011     : inst_name1 =  "JC";
+        6'b001_100     : inst_name1 =  "JN";
+        6'b001_101     : inst_name1 =  "JGE";
+        6'b001_110     : inst_name1 =  "JL";
+        6'b001_111     : inst_name1 =  "JMP";
+        default        : inst_name1 =  "xxxx";
+      endcase
+    else if (inst_type1=="TWO-OP")
+      case(opcode1[15:12])
+        4'b0100        : inst_name1 =  "MOV";
+        4'b0101        : inst_name1 =  "ADD";
+        4'b0110        : inst_name1 =  "ADDC";
+        4'b0111        : inst_name1 =  "SUBC";
+        4'b1000        : inst_name1 =  "SUB";
+        4'b1001        : inst_name1 =  "CMP";
+        4'b1010        : inst_name1 =  "DADD";
+        4'b1011        : inst_name1 =  "BIT";
+        4'b1100        : inst_name1 =  "BIC";
+        4'b1101        : inst_name1 =  "BIS";
+        4'b1110        : inst_name1 =  "XOR";
+        4'b1111        : inst_name1 =  "AND";
+        default        : inst_name1 =  "xxxx";
+      endcase
+  end
+
+  // Instructions byte/word mode
+  reg [8*32-1:0] inst_bw1;
+  always @(opcode1 or inst_type1) begin
+    if (inst_type1=="IRQ")
+      inst_bw1 =  "";
+    else if (inst_type1=="SIG-OP")
+      inst_bw1 =  opcode1[6] ? ".B" : "";
+    else if (inst_type1=="JUMP")
+      inst_bw1 =  "";
+    else if (inst_type1=="TWO-OP")
+      inst_bw1 =  opcode1[6] ? ".B" : "";
+  end
+
+  // Source register
+  reg [8*32-1:0] inst_src1;
+  wire     [3:0] src_reg1 = (inst_type1=="SIG-OP") ? opcode1[3:0] : opcode1[11:8];
+
+  always @(src_reg1 or inst_type1) begin
+    if (inst_type1=="IRQ")
+      inst_src1 =  "";
+    else if (inst_type1=="JUMP")
+      inst_src1 =  "";
+    else if ((inst_type1=="SIG-OP") || (inst_type1=="TWO-OP"))
+      case(src_reg1)
+        4'b0000 : inst_src1 =  "r0";
+        4'b0001 : inst_src1 =  "r1";
+        4'b0010 : inst_src1 =  "r2";
+        4'b0011 : inst_src1 =  "r3";
+        4'b0100 : inst_src1 =  "r4";
+        4'b0101 : inst_src1 =  "r5";
+        4'b0110 : inst_src1 =  "r6";
+        4'b0111 : inst_src1 =  "r7";
+        4'b1000 : inst_src1 =  "r8";
+        4'b1001 : inst_src1 =  "r9";
+        4'b1010 : inst_src1 =  "r10";
+        4'b1011 : inst_src1 =  "r11";
+        4'b1100 : inst_src1 =  "r12";
+        4'b1101 : inst_src1 =  "r13";
+        4'b1110 : inst_src1 =  "r14";
+        default : inst_src1 =  "r15";
+      endcase
+  end
+
+  // Destination register
+  reg [8*32-1:0] inst_dst1;
+  always @(opcode1 or inst_type1) begin
+    if (inst_type1=="IRQ")
+      inst_dst1 =  "";
+    else if (inst_type1=="SIG-OP")
+      inst_dst1 =  "";
+    else if (inst_type1=="JUMP")
+      inst_dst1 =  "";
+    else if (inst_type1=="TWO-OP")
+      case(opcode1[3:0])
+        4'b0000 : inst_dst1 =  "r0";
+        4'b0001 : inst_dst1 =  "r1";
+        4'b0010 : inst_dst1 =  "r2";
+        4'b0011 : inst_dst1 =  "r3";
+        4'b0100 : inst_dst1 =  "r4";
+        4'b0101 : inst_dst1 =  "r5";
+        4'b0110 : inst_dst1 =  "r6";
+        4'b0111 : inst_dst1 =  "r7";
+        4'b1000 : inst_dst1 =  "r8";
+        4'b1001 : inst_dst1 =  "r9";
+        4'b1010 : inst_dst1 =  "r10";
+        4'b1011 : inst_dst1 =  "r11";
+        4'b1100 : inst_dst1 =  "r12";
+        4'b1101 : inst_dst1 =  "r13";
+        4'b1110 : inst_dst1 =  "r14";
+        default : inst_dst1 =  "r15";
+      endcase
+  end
+
+  // Source Addressing mode
+  reg [8*32-1:0] inst_as1;
+  always @(inst_type1 or src_reg1 or opcode1 or inst_src1) begin
+    if (inst_type1=="IRQ")
+      inst_as1 =  "";
+    else if (inst_type1=="JUMP")
+      inst_as1 =  "";
+    else if (src_reg1==4'h3) // Addressing mode using R3
+      case (opcode1[5:4])
+        2'b11  : inst_as1 =  "#-1";
+        2'b10  : inst_as1 =  "#2";
+        2'b01  : inst_as1 =  "#1";
+        default: inst_as1 =  "#0";
+      endcase
+    else if (src_reg1==4'h2) // Addressing mode using R2
+      case (opcode1[5:4])
+        2'b11  : inst_as1 =  "#8";
+        2'b10  : inst_as1 =  "#4";
+        2'b01  : inst_as1 =  "&EDE";
+        default: inst_as1 =  inst_src1;
+      endcase
+    else if (src_reg1==4'h0) // Addressing mode using R0
+      case (opcode1[5:4])
+        2'b11  : inst_as1 =  "#N";
+        2'b10  : inst_as1 =  myFormat("@", inst_src1, 0);
+        2'b01  : inst_as1 =  "EDE";
+        default: inst_as1 =  inst_src1;
+      endcase
+    else                    // General Addressing mode
+      case (opcode1[5:4])
+        2'b11  : begin
+          inst_as1 =  myFormat("@", inst_src1, 0);
+          inst_as1 =  myFormat(inst_as1, "+", 0);
+        end
+        2'b10  : inst_as1 =  myFormat("@", inst_src1, 0);
+        2'b01  : begin
+          inst_as1 =  myFormat("x(", inst_src1, 0);
+          inst_as1 =  myFormat(inst_as1, ")", 0);
+        end
+        default: inst_as1 =  inst_src1;
+      endcase
+  end
+
+  // Destination Addressing mode
+  reg [8*32-1:0] inst_ad1;
+  always @(opcode1 or inst_type1 or inst_dst1) begin
+    if (inst_type1!="TWO-OP")
+      inst_ad1 =  "";
+    else if (opcode1[3:0]==4'h2)   // Addressing mode using R2
+      case (opcode1[7])
+        1'b1   : inst_ad1 =  "&EDE";
+        default: inst_ad1 =  inst_dst1;
+      endcase
+    else if (opcode1[3:0]==4'h0)   // Addressing mode using R0
+      case (opcode1[7])
+        2'b1   : inst_ad1 =  "EDE";
+        default: inst_ad1 =  inst_dst1;
+      endcase
+    else                          // General Addressing mode
+      case (opcode1[7])
+        2'b1   : begin
+          inst_ad1 =  myFormat("x(", inst_dst1, 0);
+          inst_ad1 =  myFormat(inst_ad1, ")", 0);
+        end
+        default: inst_ad1 =  inst_dst1;
+      endcase
+  end
+
+  // Currently executed instruction
+  //================================
+
+  wire [8*32-1:0] inst_short1 = inst_name1;
+
+  reg  [8*32-1:0] inst_full1;
+  always @(inst_type1 or inst_name1 or inst_bw1 or inst_as1 or inst_ad1) begin
+    inst_full1   = myFormat(inst_name1, inst_bw1, 0);
+    inst_full1   = myFormat(inst_full1, inst_as1, 1);
+    if (inst_type1=="TWO-OP")
+      inst_full1 = myFormat(inst_full1, ",",     0);
+    inst_full1   = myFormat(inst_full1, inst_ad1, 1);
+    if (opcode1==16'h4303)
+      inst_full1 = "NOP";
+    if (opcode1==`DBG_SWBRK_OP)
+      inst_full1 = "SBREAK";
+  end
+
+
+  // Instruction program counter
+  //================================
+
+  reg  [15:0] inst_pc1;
+  always @(posedge mclk1 or posedge puc_rst1) begin
+    if (puc_rst1)     inst_pc1  <=  16'h0000;
+    else if (decode1) inst_pc1  <=  pc1;
   end
 endmodule // msp_debug
 
