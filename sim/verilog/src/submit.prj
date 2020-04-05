@@ -1,0 +1,44 @@
+verilog work ../../../bench/verilog/RAM_D1.v
+verilog work ../../../bench/verilog/RAM_D2.v
+verilog work ../../../bench/verilog/RAM_P2.v
+verilog work ../../../bench/verilog/glbl.v
+verilog work ../../../bench/verilog/msp_debug.v
+verilog work ../../../bench/verilog/RAM_DP.v
+verilog work ../../../bench/verilog/RAM_SP.v
+verilog work ../../../bench/verilog/tb_openMSP430.v
+
+verilog work ../../../rtl/verilog/soc/MSP430_CORE0.v
+verilog work ../../../rtl/verilog/soc/MSP430_CORE1.v
+verilog work ../../../rtl/verilog/soc/MSP430_SoC.v
+verilog work ../../../rtl/verilog/soc/io_cell.v
+
+verilog work ../../../pu/rtl/verilog/core/MSP430_CORE.v
+
+verilog work ../../../pu/rtl/verilog/core/main/BCM.v
+verilog work ../../../pu/rtl/verilog/core/main/DBG.v
+verilog work ../../../pu/rtl/verilog/core/main/EXECUTION.v
+verilog work ../../../pu/rtl/verilog/core/main/FRONTEND.v
+verilog work ../../../pu/rtl/verilog/core/main/GPIO.v
+verilog work ../../../pu/rtl/verilog/core/main/MEMORY.v
+verilog work ../../../pu/rtl/verilog/core/main/MULTIPLIER.v
+verilog work ../../../pu/rtl/verilog/core/main/SFR.v
+verilog work ../../../pu/rtl/verilog/core/main/T_A.v
+verilog work ../../../pu/rtl/verilog/core/main/T_WATCHDOG.v
+verilog work ../../../pu/rtl/verilog/core/main/TEMPLATE_08.v
+verilog work ../../../pu/rtl/verilog/core/main/TEMPLATE_16.v
+verilog work ../../../pu/rtl/verilog/core/main/UART.v
+
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_and_gate.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_clock_gate.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_clock_mux.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_scan_mux.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_sync_cell.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_sync_reset.v
+verilog work ../../../pu/rtl/verilog/core/fuse/omsp_wakeup_cell.v
+
+verilog work ../../../pu/rtl/verilog/core/omsp/omsp_alu.v
+verilog work ../../../pu/rtl/verilog/core/omsp/omsp_dbg_hwbrk.v
+verilog work ../../../pu/rtl/verilog/core/omsp/omsp_dbg_i2c.v
+verilog work ../../../pu/rtl/verilog/core/omsp/omsp_dbg_uart.v
+verilog work ../../../pu/rtl/verilog/core/omsp/omsp_register_file.v
+
