@@ -451,23 +451,23 @@ module MSP430_MPSoC (
     //   Y2: 66.667 MHz
     //   Y3: 100 MHz 
     //----------------------------------------------
-    .USER_CLOCK      (CLK_40MHz),
+    .USER_CLOCK      (USER_CLOCK),
 
     //----------------------------------------------
     // User DIP Switch x4
     //----------------------------------------------
-    .GPIO_DIP1       (SW1),
-    .GPIO_DIP2       (SW2),
-    .GPIO_DIP3       (SW3),
-    .GPIO_DIP4       (SW4),
+    .GPIO_DIP1       (GPIO_DIP1),
+    .GPIO_DIP2       (GPIO_DIP2),
+    .GPIO_DIP3       (GPIO_DIP3),
+    .GPIO_DIP4       (GPIO_DIP4),
 
     //----------------------------------------------
     // User LEDs			
     //----------------------------------------------
-    .GPIO_LED1       (LED01),
-    .GPIO_LED2       (LED02),
-    .GPIO_LED3       (LED03),
-    .GPIO_LED4       (LED04),
+    .GPIO_LED1       (GPIO_LED01),
+    .GPIO_LED2       (GPIO_LED02),
+    .GPIO_LED3       (GPIO_LED03),
+    .GPIO_LED4       (GPIO_LED04),
 
     //----------------------------------------------
     // Silicon Labs CP2102 USB-to-UART Bridge Chip
@@ -613,15 +613,15 @@ module MSP430_MPSoC (
     //   Y2: 66.667 MHz
     //   Y3: 100 MHz 
     //----------------------------------------------
-    .USER_CLOCK      (CLK_40MHz),
+    .USER_CLOCK      (USER_CLOCK),
 
     //----------------------------------------------
     // User DIP Switch x4
     //----------------------------------------------
-    .GPIO_DIP1       (SW1),
-    .GPIO_DIP2       (SW2),
-    .GPIO_DIP3       (SW3),
-    .GPIO_DIP4       (SW4),
+    .GPIO_DIP1       (GPIO_DIP1),
+    .GPIO_DIP2       (GPIO_DIP2),
+    .GPIO_DIP3       (GPIO_DIP3),
+    .GPIO_DIP4       (GPIO_DIP4),
 
     //----------------------------------------------
     // User LEDs			
