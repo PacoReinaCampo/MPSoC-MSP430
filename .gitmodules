@@ -4,3 +4,12 @@
 [submodule "soc"]
 	path = soc
 	url = https://github.com/PacoReinaCampo/SoC-MSP430.git
+[submodule "dma"]
+	path = dma
+	url = https://github.com/PacoReinaCampo/MPSoC-DMA.git
+[submodule "noc"]
+	path = noc
+	url = https://github.com/PacoReinaCampo/MPSoC-NoC.git
+[submodule "mpi"]
+	path = mpi
+	url = https://github.com/PacoReinaCampo/MPSoC-MPI.git
