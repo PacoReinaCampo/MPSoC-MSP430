@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-MSP430 CPU                                              //
+//              MPSoC-OR1K CPU                                                //
 //              Multi Processor System on Chip                                //
-//              Blackbone Bus Interface                                       //
+//              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
