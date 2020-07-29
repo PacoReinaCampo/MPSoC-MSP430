@@ -41,8 +41,8 @@
  */
 
 module bootrom #(
-   parameter AW = 32,
-   parameter DW = 32
+  parameter AW = 32,
+  parameter DW = 32
 )
   (
     input clk,
@@ -55,17 +55,16 @@ module bootrom #(
     input               bb_we_i,
 
     output reg [DW-1:0] bb_dout_o
- );
+  );
 
   ////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
-
-   always @(*) begin
-      case(bb_addr_i[7:2])
-        `include "bootrom_code.v"
-        default: bb_dout_o = 32'hx;
-      endcase
-   end
+  always @(*) begin
+    case(bb_addr_i[7:2])
+      `include "bootrom_code.sv"
+      default: bb_dout_o = 32'hx;
+    endcase
+  end
 endmodule

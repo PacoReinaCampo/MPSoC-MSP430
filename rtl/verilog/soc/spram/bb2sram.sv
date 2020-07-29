@@ -53,8 +53,8 @@ module bb2sram #(
 
   // byte select width
   localparam SW = (DW == 32) ? 4 :
-  (DW == 16) ? 2 :
-  (DW ==  8) ? 1 : 'hx,
+                  (DW == 16) ? 2 :
+                  (DW ==  8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -95,17 +95,17 @@ module bb2sram #(
 
   wire [WORD_AW-1:0] word_addr_in;
 
-  reg [WORD_AW-1:0]         word_addr_reg;
-  reg [WORD_AW-1:0]         word_addr;
+  reg  [WORD_AW-1:0] word_addr_reg;
+  reg  [WORD_AW-1:0] word_addr;
 
   // Register to indicate if the cycle is a Wishbone B3-registered feedback
   // type access
-  reg                  bb_b3_trans;
-  wire                 bb_b3_trans_start, bb_b3_trans_stop;
+  reg                bb_b3_trans;
+  wire               bb_b3_trans_start, bb_b3_trans_stop;
 
   // Register to use for counting the addresses when doing burst accesses
-  reg [WORD_AW-1:0]    burst_adr_counter;
-  wire                 using_burst_adr;
+  reg  [WORD_AW-1:0] burst_adr_counter;
+  wire               using_burst_adr;
 
   ////////////////////////////////////////////////////////////////
   //

@@ -9,7 +9,7 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-MSP430 CPU                                              //
+//              MPSoC-RISCV CPU                                               //
 //              Multi Processor System on Chip                                //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //              WishBone Bus Interface                                        //
@@ -38,6 +38,7 @@
  *
  * =============================================================================
  * Author(s):
+ *   Stefan Wallentowitz <stefan@wallentowitz.de>
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
