@@ -109,16 +109,16 @@
 ../../../../soc/rtl/verilog/soc/spram/bb_sram_sp.sv
 ../../../../soc/rtl/verilog/soc/spram/bb2sram.sv
 ../../../../soc/rtl/verilog/soc/msp430_tile.sv
-../../../../bench/verilog/glip/glip_tcp_toplevel.sv
-../../../../bench/verilog/monitor/r3_checker.sv
-../../../../bench/verilog/monitor/trace_monitor.sv
-../../../../bench/verilog/msp430_tile_testbench.sv
+../../../../soc/bench/verilog/glip/glip_tcp_toplevel.sv
+../../../../soc/bench/verilog/monitor/r3_checker.sv
+../../../../soc/bench/verilog/monitor/trace_monitor.sv
+../../../../soc/bench/verilog/msp430_tile_testbench.sv
 --top-module msp430_tile_testbench
 --exe
-../../../../bench/cpp/glip/glip_tcp_dpi.cpp
-../../../../bench/cpp/glip/GlipTcp.cpp
-../../../../bench/cpp/msp430_tile_testbench.cpp
-../../../../bench/cpp/verilator/src/OptionsParser.cpp
-../../../../bench/cpp/verilator/src/VerilatedControl.cpp
+../../../../soc/bench/cpp/glip/glip_tcp_dpi.cpp
+../../../../soc/bench/cpp/glip/GlipTcp.cpp
+../../../../soc/bench/cpp/msp430_tile_testbench.cpp
+../../../../soc/bench/cpp/verilator/src/OptionsParser.cpp
+../../../../soc/bench/cpp/verilator/src/VerilatedControl.cpp
 -GNUM_CORES=2
 -GUSE_DEBUG=1
