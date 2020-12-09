@@ -260,7 +260,215 @@ sudo apt upgrade
 
 ## 2.2. PU-MSP430
 
-### 2.2.1. Definition
+## 2.1. CORE-MSP430
+
+### 2.1.1. Functionality
+
+#### 2.1.1.1. Organization
+
+| Core                        | Module description                 |
+| --------------------------- | ---------------------------------- |
+| `msp430_core`               |                                    |
+| `...msp430_bcm`             |                                    |
+| `...msp430_frontend`        |                                    |
+| `...msp430_execution`       |                                    |
+| `.....msp430_register_file` |                                    |
+| `.....msp430_alu`           |                                    |
+| `...msp430_memory`          |                                    |
+| `...msp430_sfr`             |                                    |
+| `...msp430_watchdog`        |                                    |
+| `...msp430_multiplier`      |                                    |
+| `...msp430_dbg`             |                                    |
+| `.....msp430_dbg_hwbrk`     |                                    |
+| `.....msp430_dbg_uart`      |                                    |
+| `.....msp430_dbg_i2c`       |                                    |
+
+#### 2.1.1.2. Pipeline
+
+### 2.1.2. Interface
+
+#### 2.1.1.1. Constants
+
+##### 2.1.1.1.1. Basic System Configuration
+
+|Description                            | Parameter   | Type    | Default |
+|-------------------------------------- |:-----------:|:-------:|:-------:|
+|Program Memory Size                    | PMEM_SIZE   | integer | 16384   |
+|Data Memory Size                       | DMEM_SIZE   | integer | 4096    |
+|Include/Exclude Hardware Multiplier    | MULTIPLYING | bit     | 1       |
+|Include/Exclude Serial Debug interface | DBG_ON      | bit     | 1       |
+
+##### 2.1.1.1.2. Advanced System Configuration (for experienced users)
+
+| Description                    | Parameter      | Type       | Default |
+| ------------------------------ |:--------------:|:----------:|:-------:|
+| Peripheral Memory Space        | PER_SIZE       | integer    | 512     |
+| Custom user version number     | USER_VERSION   | bit vector | 0       |
+| Watchdog timer                 | WATCHDOG       | bit        | 1       |
+| Non-Maskable-Interrupt support | NMI_EN         | bit        | 1       |
+| Number of available IRQs       | IRQ_16         | bit        | 1       |
+| Number of available IRQs       | IRQ_32         | bit        | 0       |
+| Number of available IRQs       | IRQ_64         | bit        | 0       |
+| Input synchronizers            | SYNC_NMI       | bit        | 1       |
+| Input synchronizers            | SYNC_CPU_EN    | bit        | 0       |
+| Input synchronizers            | SYNC_DBG_EN    | bit        | 0       |
+| Debugger definition            | DBG_RST_BRK_EN | bit        | 0       |
+
+
+##### 2.1.1.1.3. Expert System Configuration (experts only)
+
+| Description                            | Parameter          | Type       | Default |
+| -------------------------------------- |:------------------:|:----------:|:-------:|
+| Hardware breakpoint/watchpoint units   | DBG_HWBRK          | bit vector | 1       |
+| Select serial debug interface protocol | DBG_UART           | bit        | 0       |
+| Select serial debug interface protocol | DBG_I2C            | bit        | 1       |
+| I2C broadcast address                  | DBG_I2C_BROADCASTC | bit        | 1       |
+| Hardware breakpoint RANGE mode         | HWBRK_RANGE        | bit        | 1       |
+| ASIC version                           | ASIC               | bit        | 1       |
+
+##### 2.1.1.1.4. ASIC System Configuration (experts/professionals only)
+
+|Description                     | Parameter           | Type       | Default |
+|------------------------------- |:-------------------:|:----------:|:-------:|
+|LOW POWER MODE: SCG             | SCG_EN              | bit vector | 1       |
+|FINE GRAINED CLOCK GATING       | CLOCK_GATING        | bit        | 1       |
+|ASIC CLOCKING                   | ASIC_CLOCKING       | bit        | 1       |
+|LFXT CLOCK DOMAIN               | LFXT_DOMAIN         | bit        | 1       |
+|MCLK: Clock Mux                 | MCLK_MUX            | bit        | 1       |
+|SMCLK: Clock Mux                | SMCLK_MUX           | bit        | 1       |
+|WATCHDOG: Clock Mux             | WATCHDOG_MUX        | bit        | 1       |
+|WATCHDOG: Clock No-Mux          | WATCHDOG_NOMUX_ACLK | bit        | 0       |
+|MCLK: Clock divider             | MCLK_DIVIDER        | bit        | 1       |
+|SMCLK: Clock divider (/1/2/4/8) | SMCLK_DIVIDER       | bit        | 1       |
+|ACLK: Clock divider (/1/2/4/8)  | ACLK_DIVIDER        | bit        | 1       |
+|LOW POWER MODE: CPUOFF          | CPUOFF_EN           | bit        | 1       |
+|LOW POWER MODE: OSCOFF          | OSCOFF_EN           | bit        | 1       |
+
+##### 2.1.1.1.5. System Constants (do not edit)
+
+|Description                                  | Parameter           | Type       | Default  |
+|-------------------------------------------- |:-------------------:|:----------:|:--------:|
+|Program Memory Size                          | PMEM_AWIDTH         | integer    | 13       |
+|Data Memory Size                             | DMEM_AWIDTH         | integer    | 11       |
+|Peripheral Memory Size                       | PER_AWIDTH          | integer    | 8        |
+|Data Memory Base Adresses                    | DMEM_BASE           | integer    | N        |
+|Program Memory                               | PMEM_MSB            | integer    | N        |
+|Data Memory                                  | DMEM_MSB            | integer    | N        |
+|Peripheral Memory                            | PER_MSB             | integer    | N        |
+|Number of available IRQs                     | IRQ_NR              | integer    | 16       |
+|Instructions type                            | INST_SOC            | integer    | 0        |
+|Instructions type                            | INST_JMPC           | integer    | 1        |
+|Instructions type                            | INST_TOC            | integer    | 2        |
+|Single-operand arithmetic                    | RRC                 | integer    | 0        |
+|Single-operand arithmetic                    | SWPB                | integer    | 1        |
+|Single-operand arithmetic                    | RRA                 | integer    | 2        |
+|Single-operand arithmetic                    | SXTC                | integer    | 3        |
+|Single-operand arithmetic                    | PUSH                | integer    | 4        |
+|Single-operand arithmetic                    | CALL                | integer    | 5        |
+|Single-operand arithmetic                    | RETI                | integer    | 6        |
+|Single-operand arithmetic                    | IRQX                | integer    | 7        |
+|Conditional jump                             | JNE                 | integer    | 0        |
+|Conditional jump                             | JEQ                 | integer    | 1        |
+|Conditional jump                             | JNC                 | integer    | 2        |
+|Conditional jump                             | JC                  | integer    | 3        |
+|Conditional jump                             | JN                  | integer    | 4        |
+|Conditional jump                             | JGE                 | integer    | 5        |
+|Conditional jump                             | JL                  | integer    | 6        |
+|Conditional jump                             | JMP                 | integer    | 7        |
+|Two-operand arithmetic                       | MOV                 | integer    | 0        |
+|Two-operand arithmetic                       | ADD                 | integer    | 1        |
+|Two-operand arithmetic                       | ADDC                | integer    | 2        |
+|Two-operand arithmetic                       | SUBC                | integer    | 3        |
+|Two-operand arithmetic                       | SUBB                | integer    | 4        |
+|Two-operand arithmetic                       | CMP                 | integer    | 5        |
+|Two-operand arithmetic                       | DADD                | integer    | 6        |
+|Two-operand arithmetic                       | BITC                | integer    | 7        |
+|Two-operand arithmetic                       | BIC                 | integer    | 8        |
+|Two-operand arithmetic                       | BIS                 | integer    | 9        |
+|Two-operand arithmetic                       | XORX                | integer    | 10       |
+|Two-operand arithmetic                       | ANDX                | integer    | 11       |
+|Addressing modes                             | DIR                 | integer    | 0        |
+|Addressing modes                             | IDX                 | integer    | 1        |
+|Addressing modes                             | INDIR               | integer    | 2        |
+|Addressing modes                             | INDIR_I             | integer    | 3        |
+|Addressing modes                             | SYMB                | integer    | 4        |
+|Addressing modes                             | IMM                 | integer    | 5        |
+|Addressing modes                             | ABSC                | integer    | 6        |
+|Addressing modes                             | CONST               | integer    | 7        |
+|Instruction state machine                    | I_IRQ_FETCH         | bit vector | 000      |
+|Instruction state machine                    | I_IRQ_DONE          | bit vector | 001      |
+|Instruction state machine                    | I_DEC               | bit vector | 010      |
+|Instruction state machine                    | I_EXT1              | bit vector | 011      |
+|Instruction state machine                    | I_EXT2              | bit vector | 100      |
+|Instruction state machine                    | I_IDLE              | bit vector | 101      |
+|Execution state machine                      | E_SRC_AD            | bit vector | X5       |
+|Execution state machine                      | E_SRC_RD            | bit vector | X6       |
+|Execution state machine                      | E_SRC_WR            | bit vector | X7       |
+|Execution state machine                      | E_DST_AD            | bit vector | X8       |
+|Execution state machine                      | E_DST_RD            | bit vector | X9       |
+|Execution state machine                      | E_DST_WR            | bit vector | XA       |
+|Execution state machine                      | E_EXEC              | bit vector | XB       |
+|Execution state machine                      | E_JUMP              | bit vector | XC       |
+|Execution state machine                      | E_IDLE              | bit vector | XD       |
+|Execution state machine                      | E_IRQ_0             | bit vector | X2       |
+|Execution state machine                      | E_IRQ_1             | bit vector | X1       |
+|Execution state machine                      | E_IRQ_2             | bit vector | X0       |
+|Execution state machine                      | E_IRQ_3             | bit vector | X3       |
+|Execution state machine                      | E_IRQ_4             | bit vector | X4       |
+|ALU control signals                          | ALU_SRC_INV         | integer    | 0        |
+|ALU control signals                          | ALU_INC             | integer    | 1        |
+|ALU control signals                          | ALU_INC_C           | integer    | 2        |
+|ALU control signals                          | ALU_ADD             | integer    | 3        |
+|ALU control signals                          | ALU_AND             | integer    | 4        |
+|ALU control signals                          | ALU_OR              | integer    | 5        |
+|ALU control signals                          | ALU_XOR             | integer    | 6        |
+|ALU control signals                          | ALU_DADD            | integer    | 7        |
+|ALU control signals                          | ALU_STAT_7          | integer    | 8        |
+|ALU control signals                          | ALU_STAT_F          | integer    | 9        |
+|ALU control signals                          | ALU_SHIFT           | integer    | 10       |
+|ALU control signals                          | EXEC_NO_WR          | integer    | 11       |
+|Debug interface                              | DBG_UART_WR         | integer    | 18       |
+|Debug interface                              | DBG_UART_BW         | integer    | 17       |
+|Debug interface CPU_CTL register             | HALT                | integer    | 0        |
+|Debug interface CPU_CTL register             | RUN                 | integer    | 1        |
+|Debug interface CPU_CTL register             | ISTEP               | integer    | 2        |
+|Debug interface CPU_CTL register             | SW_BRK_EN           | integer    | 3        |
+|Debug interface CPU_CTL register             | FRZ_BRK_EN          | integer    | 4        |
+|Debug interface CPU_CTL register             | RST_BRK_EN          | integer    | 5        |
+|Debug interface CPU_CTL register             | CPU_RST             | integer    | 6        |
+|Debug interface BRKx_CTL register            | BRK_MODE_RD         | integer    | 0        |
+|Debug interface BRKx_CTL register            | BRK_MODE_WR         | integer    | 1        |
+|Debug interface BRKx_CTL register            | BRK_EN              | integer    | 2        |
+|Debug interface BRKx_CTL register            | BRK_I_EN            | integer    | 3        |
+|Debug interface BRKx_CTL register            | BRK_RANGE           | integer    | 4        |
+|Basic clock module: BCSCTL2 Control Register | SELMX               | integer    | 7        |
+|Basic clock module: BCSCTL2 Control Register | SELS                | integer    | 3        |
+|MCLK Clock gate                              | MCLK_CGATE          | bit        | 1        |
+|SMCLK Clock gate                             | SMCLK_CGATE         | bit        | 1        |
+|Debug interface: CPU version                 | CPU_VERSION         | bit vector | 010      |
+|Debug interface: Software breakpoint opcode  | DBG_SWBRK_OP        | bit vector | X4343    |
+|UART interface auto data synchronization     | DBG_UART_AUTO_SYNC  | bit        | 1        |
+|Counter width for the debug interface UART   | DBG_UART_XFER_CNT_W | integer    | 16       |
+|Debug UART interface data rate               | DBG_UART_BAUD       | integer    | 2000000  |
+|Debug UART interface data rate               | DBG_DCO_FREQ        | integer    | 20000000 |
+|Debug UART interface data rate               | DBG_UART_CNT        | integer    | N        |
+|Debug UART interface data rate               | DBG_UART_CNTB       | bit vector | N        |
+|Debug interface input synchronizer           | SYNC_DBG_UART_RXD   | bit        | 1        |
+|MULTIPLIER CONFIGURATION                     | MPY_16X16           | bit        | 1        |
+
+#### 2.1.1.2. Signals
+
+##### 2.1.1.2.1. Instruction Inputs/Outputs Bus
+
+##### 2.1.1.2.2. Data Inputs/Outputs Bus
+
+### 2.1.3. Registers
+
+### 2.1.4. Interruptions
+
+## 2.2. PU-MSP430
+
+### 2.2.1. Processing Unit
 
 The MSP430 implementation has a 16 bit Microarchitecture, 3 stages data pipeline and an Instruction Set Architecture based on Reduced Instruction Set Computer. Compatible with Wishbone Bus. Only For Researching.
 
@@ -276,7 +484,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 
 ### 2.2.2. Instruction Cache
 
-#### 2.2.2.1. Instruction Organization
+#### 2.2.2.1. Functionality
 
 | Instruction Memory             | Module description                 |
 | ------------------------------ | ---------------------------------- |
@@ -295,9 +503,11 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `...riscv_mux`                 | Bus-Interface-Unit Mux             |
 | `riscv_biu`                    | Bus Interface Unit                 |
 
-#### 2.2.2.2. Instruction INPUTS/OUTPUTS AMBA4 AXI-Lite Bus
+#### 2.2.2.2. Interface
 
-##### 2.2.2.2.1. Signals of the Read and Write Address channels
+##### 2.2.2.2.1. Instruction INPUTS/OUTPUTS AMBA4 AXI-Lite Bus
+
+###### 2.2.2.2.1.1. Signals of the Read and Write Address channels
 
 | Write Port | Read Port  |  Size            | Direction | Description                              |
 | ---------- | ---------- |:----------------:|:---------:| ---------------------------------------- |
@@ -315,7 +525,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `AWVALID`  | `ARVALID`  |         1        | Output    | xVALID handshake signal                  |
 | `AWREADY`  | `ARREADY`  |         1        | Input     | xREADY handshake signal                  |
 
-##### 2.2.2.2.2. Signals of the Read and Write Data channels
+###### 2.2.2.2.1.2. Signals of the Read and Write Data channels
 
 | Write Port | Read Port  |  Size            | Direction | Description                              |
 | ---------- | ---------- |:----------------:|:---------:| ---------------------------------------- |
@@ -328,7 +538,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `WVALID`   | `RVALID`   |         1        | Output    | xVALID handshake signal                  |
 | `WREADY`   | `RREADY`   |         1        | Input     | xREADY handshake signal                  |
 
-##### 2.2.2.2.3. Signals of the Write Response channel
+###### 2.2.2.2.1.3. Signals of the Write Response channel
 
 | Write Port | Size             | Direction | Description                                     |
 | ---------- |:----------------:|:---------:| ----------------------------------------------- |
@@ -338,7 +548,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `BVALID`   |         1        |   Input   | xVALID handshake signal                         |
 | `BREADY`   |         1        |   Output  | xREADY handshake signal                         |
 
-#### 2.2.2.3. Instruction INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
+##### 2.2.2.2.2. Instruction INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
 
 | Port         |  Size  | Direction | Description                           |
 | ------------ |:------:|:---------:| ------------------------------------- |
@@ -358,7 +568,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `IHREADY`    |    1   |   Input   | Instruction Slave Ready Indicator     |
 | `IHRESP`     |    1   |   Input   | Instruction Transfer Response         |
 
-#### 2.2.2.4. Instruction INPUTS/OUTPUTS Wishbone Bus
+##### 2.2.2.2.3. Instruction INPUTS/OUTPUTS Wishbone Bus
 
 | Port    |  Size  | Direction | Description                     |
 | ------- |:------:|:---------:| ------------------------------- |
@@ -378,7 +588,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 
 ### 2.2.3. Data Cache
 
-#### 2.2.3.1. Data Organization
+#### 2.2.3.1. Functionality
 
 | Data Memory                    | Module description                 |
 | ------------------------------ | ---------------------------------- |
@@ -396,9 +606,11 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `...riscv_mux`                 | Bus-Interface-Unit Mux             |
 | `riscv_biu`                    | Bus Interface Unit                 |
 
-#### 2.2.3.2. Data INPUTS/OUTPUTS AMBA4 AXI-Lite Bus
+#### 2.2.3.2. Interface
 
-##### 2.2.3.2.1. Signals of the Read and Write Address channels
+##### 2.2.3.2.1. Data INPUTS/OUTPUTS AMBA4 AXI-Lite Bus
+
+###### 2.2.3.2.1.1. Signals of the Read and Write Address channels
 
 | Write Port | Read Port  |  Size            | Direction | Description                              |
 | ---------- | ---------- |:----------------:|:---------:| ---------------------------------------- |
@@ -416,7 +628,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `AWVALID`  | `ARVALID`  |         1        | Output    | xVALID handshake signal                  |
 | `AWREADY`  | `ARREADY`  |         1        | Input     | xREADY handshake signal                  |
 
-##### 2.2.3.2.2. Signals of the Read and Write Data channels
+###### 2.2.3.2.1.2. Signals of the Read and Write Data channels
 
 | Write Port | Read Port  |  Size            | Direction | Description                              |
 | ---------- | ---------- |:----------------:|:---------:| ---------------------------------------- |
@@ -429,7 +641,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `WVALID`   | `RVALID`   |        1         | Output    | xVALID handshake signal                  |
 | `WREADY`   | `RREADY`   |        1         | Input     | xREADY handshake signal                  |
 
-##### 2.2.3.2.3. Signals of the Write Response channel
+###### 2.2.3.2.1.3. Signals of the Write Response channel
 
 | Write Port | Size             | Direction | Description                                     |
 | ---------- |:----------------:|:---------:| ----------------------------------------------- |
@@ -439,7 +651,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `BVALID`   |         1        |   Input   | xVALID handshake signal                         |
 | `BREADY`   |         1        |   Output  | xREADY handshake signal                         |
 
-#### 2.2.3.3. Data INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
+#### 2.2.3.2.2. Data INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
 
 | Port         |  Size  | Direction | Description                    |
 | ------------ |:------:|:---------:| ------------------------------ |
@@ -459,7 +671,7 @@ A PU cache is a hardware cache used by the PU to reduce the average cost (time o
 | `DHREADY`    |    1   |   Input   | Data Slave Ready Indicator     |
 | `DHRESP`     |    1   |   Input   | Data Transfer Response         |
 
-#### 2.2.3.4. Data INPUTS/OUTPUTS Wishbone Bus
+#### 2.2.3.2.3. Data INPUTS/OUTPUTS Wishbone Bus
 
 | Port    |  Size  | Direction | Description                     |
 | ------- |:------:|:---------:| ------------------------------- |
