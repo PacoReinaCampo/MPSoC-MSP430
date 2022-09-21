@@ -1,8 +1,8 @@
 ---
-title: 'SoC-NTM (T-DNC/NTM-SoC)'
+title: 'MPSoC-MSP430'
 subtitle: 'QueenField ![](../../icon.jpg)'
 
 author: Paco Reina Campo
 
-abstract: Neural Turing Machine for a MPSoC verified with UVM/OSVVM/FV.
+abstract: Multi-Processor System on Chip with ISA MSP430.
 ---
