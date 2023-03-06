@@ -149,4 +149,4 @@
 ../../../../rtl/verilog/soc/spram/bb2sram.sv
 ../../../../rtl/verilog/soc/msp430_tile.sv
 
-../../../../bench/verilog/mpsoc2d_msp430_testbench.sv
+../../../../bench/verilog/main/mpsoc2d_msp430_testbench.sv

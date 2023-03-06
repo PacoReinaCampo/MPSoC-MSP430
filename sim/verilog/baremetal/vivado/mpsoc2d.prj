@@ -143,4 +143,4 @@ sv work ../../../../rtl/verilog/soc/spram/bb_sram_sp.sv
 sv work ../../../../rtl/verilog/soc/spram/bb2sram.sv
 sv work ../../../../rtl/verilog/soc/msp430_tile.sv
 
-sv work ../../../../bench/verilog/mpsoc2d_msp430_testbench.sv
+sv work ../../../../bench/verilog/main/mpsoc2d_msp430_testbench.sv
