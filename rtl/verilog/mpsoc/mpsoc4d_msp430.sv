@@ -40,10 +40,10 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
-import optimsoc_config::*;
+import peripheral_dbg_soc_dii_channel::dii_flit;
+import soc_optimsoc_configuration::*;
 
-module msp430_mpsoc4d #(
+module mpsoc4d_msp430 #(
   parameter AW = 32,
   parameter DW = 32,
 
@@ -59,8 +59,8 @@ module msp430_mpsoc4d #(
   input clk,
   input rst,
 
-  glip_channel c_glip_in,
-  glip_channel c_glip_out,
+  soc_glip_channel c_glip_in,
+  soc_glip_channel c_glip_out,
 
   output [NODES-1:0][AW-1:0] bb_ext_addr_i,
   output [NODES-1:0][DW-1:0] bb_ext_din_i,
@@ -111,7 +111,7 @@ module msp430_mpsoc4d #(
   // Module Body
   //
 
-  debug_interface #(
+  peripheral_dbg_soc_interface #(
     .SYSTEM_VENDOR_ID        (2),
     .SYSTEM_DEVICE_ID        (2),
     .NUM_MODULES             (CONFIG.DEBUG_NUM_MODS),
@@ -119,7 +119,7 @@ module msp430_mpsoc4d #(
     .SUBNET_BITS             (CONFIG.DEBUG_SUBNET_BITS),
     .LOCAL_SUBNET            (CONFIG.DEBUG_LOCAL_SUBNET),
     .DEBUG_ROUTER_BUFFER_SIZE(CONFIG.DEBUG_ROUTER_BUFFER_SIZE)
-  ) u_debuginterface (
+  ) u_debug_interface (
     .clk           (clk),
     .rst           (rst),
     .sys_rst       (rst_sys),
@@ -140,7 +140,7 @@ module msp430_mpsoc4d #(
   assign debug_ring_in[2]        = debug_ring_out[3];
   assign debug_ring_out_ready[3] = debug_ring_in_ready[2];
 
-  noc_mesh4d #(
+  peripheral_noc_mesh4d #(
     .FLIT_WIDTH(FLIT_WIDTH),
     .CHANNELS  (CHANNELS),
 
@@ -163,7 +163,7 @@ module msp430_mpsoc4d #(
   );
   generate
     for (i = 0; i < NODES; i = i + 1) begin : gen_ct
-      msp430_tile #(
+      soc_msp430_tile #(
         .CONFIG      (CONFIG),
         .ID          (i),
         .COREBASE    (i * CONFIG.CORES_PER_TILE),
