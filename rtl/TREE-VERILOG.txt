@@ -1,7 +1,8 @@
 verilog
 └── mpsoc
-    ├── mpsoc2d_msp430.sv
-    ├── mpsoc3d_msp430.sv
-    └── mpsoc4d_msp430.sv
+    └── optimsoc
+        ├── mpsoc2d_msp430.sv
+        ├── mpsoc3d_msp430.sv
+        └── mpsoc4d_msp430.sv
 
-1 directory, 3 files
+2 directories, 3 files
