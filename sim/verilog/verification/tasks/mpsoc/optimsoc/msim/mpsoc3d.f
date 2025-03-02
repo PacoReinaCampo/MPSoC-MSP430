@@ -59,7 +59,7 @@
 ../../../../../../soc/peripheral/dbg/rtl/soc/verilog/code/peripheral/interfaces/common/peripheral_dbg_soc_dii_channel.sv
 ../../../../../../soc/peripheral/dbg/rtl/soc/verilog/code/peripheral/interfaces/msp430/peripheral_dbg_soc_mmsp430_trace_exec.sv
 
-../../../../../../soc/bench/verilog/glip/soc_glip_channel.sv
+../../../../../../soc/verification/tasks/library/verilog/optimsoc/glip/soc_glip_channel.sv
 
 ../../../../../../soc/peripheral/dbg/rtl/soc/verilog/code/peripheral/blocks/buffer/peripheral_dbg_soc_dii_buffer.sv
 ../../../../../../soc/peripheral/dbg/rtl/soc/verilog/code/peripheral/blocks/buffer/peripheral_dbg_soc_osd_fifo.sv
@@ -164,6 +164,6 @@
 ../../../../../../soc/rtl/verilog/soc/spram/soc_sram_sp_bb.sv
 ../../../../../../soc/rtl/verilog/soc/spram/soc_bb2sram.sv
 
-../../../../../../rtl/verilog/mpsoc/mpsoc3d_msp430.sv
+../../../../../../rtl/verilog/mpsoc/optimsoc/mpsoc3d_msp430.sv
 
-../../../../../../bench/verilog/main/mpsoc3d_msp430_testbench.sv
+../../../../../../verification/tasks/library/verilog/optimsoc/main/mpsoc3d_msp430_testbench.sv
