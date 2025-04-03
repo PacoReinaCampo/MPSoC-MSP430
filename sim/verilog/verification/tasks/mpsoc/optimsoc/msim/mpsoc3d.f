@@ -43,8 +43,8 @@
 ###################################################################################
 
 +incdir+../../../../../../soc/rtl/verilog/soc/bootrom
-+incdir+../../../../../../soc/bench/cpp/verilator/inc
-+incdir+../../../../../../soc/bench/cpp/glip
++incdir+../../../../../../soc/verification/tasks/library/cpp/optimsoc/verilator/inc
++incdir+../../../../../../soc/verification/tasks/library/cpp/optimsoc/glip
 
 +incdir+../../../../../../soc/pu/rtl/verilog/pkg
 
